@@ -157,11 +157,11 @@ export class ListView implements OnInit {
   }
 
   viewTask(task: Task) {
-    this.snackBar.open(`Viewing task: ${task.title}`, 'Close', { duration: 3000 });
+    this.router.navigate(['/tasks', task.uid]);
   }
 
   editTask(task: Task) {
-    this.snackBar.open(`Editing task: ${task.title}`, 'Close', { duration: 3000 });
+    this.router.navigate(['/tasks', task.uid]);
   }
 
   duplicateTask(task: Task) {
