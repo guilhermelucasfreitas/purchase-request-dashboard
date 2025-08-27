@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, OnInit, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -75,7 +76,11 @@ export class ListView implements OnInit {
 
   overdueCount = computed(() => this.tasks().filter((task) => this.isOverdue(task)).length);
 
-  constructor(private taskService: TaskService, private snackBar: MatSnackBar) {}
+  constructor(
+    private taskService: TaskService,
+    private snackBar: MatSnackBar,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.loadUsers();
@@ -147,8 +152,8 @@ export class ListView implements OnInit {
   }
 
   // Action methods
-  openCreateDialog() {
-    this.snackBar.open('Create dialog will be implemented', 'Close', { duration: 3000 });
+  openCreateTask() {
+    this.router.navigate(['/tasks/new']);
   }
 
   viewTask(task: Task) {

@@ -1,0 +1,75 @@
+<div class="form-container">
+      <div class="form-header">
+        <button mat-icon-button (click)="goBack()">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div class="title-section">
+          <h1>{{ isEditMode() ? 'Edit Task' : 'Create New Task' }}</h1>
+          <p class="subtitle">{{ isEditMode() ? 'Update task details' : 'Add a new task to your project' }}</p>
+        </div>
+      </div>
+
+      <mat-card class="form-card">
+        <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+          <div class="form-content">
+            <mat-form-field appearance="outline">
+              <mat-label>Title</mat-label>
+              <input matInput formControlName="title" placeholder="Enter task title">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Description</mat-label>
+              <textarea matInput formControlName="description" rows="4" placeholder="Enter task description"></textarea>
+            </mat-form-field>
+
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>Status</mat-label>
+                <mat-select formControlName="status">
+                  <mat-option value="BACKLOG">Backlog</mat-option>
+                  <mat-option value="PENDING">Pending</mat-option>
+                  <mat-option value="IN_PROGRESS">In Progress</mat-option>
+                  <mat-option value="IN_REVIEW">In Review</mat-option>
+                  <mat-option value="DONE">Done</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Priority</mat-label>
+                <mat-select formControlName="priority">
+                  <mat-option value="LOW">Low</mat-option>
+                  <mat-option value="MEDIUM">Medium</mat-option>
+                  <mat-option value="HIGH">High</mat-option>
+                  <mat-option value="CRITICAL">Critical</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>Assignee</mat-label>
+                <mat-select formControlName="assigneeId">
+                  <mat-option value="">Unassigned</mat-option>
+                  <mat-option value="1">John Doe</mat-option>
+                  <mat-option value="2">Jane Smith</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Due Date</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="dueDate">
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" mat-stroked-button (click)="goBack()">Cancel</button>
+            <button type="submit" mat-raised-button color="primary" [disabled]="taskForm.invalid">
+              {{ isEditMode() ? 'Update Task' : 'Create Task' }}
+            </button>
+          </div>
+        </form>
+      </mat-card>
+    </div>
