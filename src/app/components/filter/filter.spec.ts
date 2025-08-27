@@ -27,6 +27,18 @@ describe('Filter', () => {
   let fixture: ComponentFixture<Filter>;
   let loader: HarnessLoader;
 
+  // Helper para garantir que o combineLatest esteja inicializado
+  const initializeFilters = async () => {
+    // Força todos os controles a emitirem um valor inicial
+    component.searchControl.setValue('');
+    component.statusControl.setValue([]);
+    component.priorityControl.setValue([]);
+    component.assigneeControl.setValue([]);
+
+    // Aguarda o debounce do search (300ms) + margem de segurança
+    await new Promise((resolve) => setTimeout(resolve, 350));
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
@@ -50,6 +62,9 @@ describe('Filter', () => {
 
     fixture.detectChanges();
     await fixture.whenStable();
+
+    // Inicializa os filtros para garantir que combineLatest está pronto
+    await initializeFilters();
   });
 
   it('should create', () => {
@@ -60,6 +75,9 @@ describe('Filter', () => {
     it('should emit filters when search input changes', async () => {
       const filtersChangedSpy = jasmine.createSpy('filtersChanged');
       component.filtersChanged.subscribe(filtersChangedSpy);
+
+      // Reset spy after initialization
+      filtersChangedSpy.calls.reset();
 
       const searchField = await loader.getHarness(
         MatFormFieldHarness.with({ floatingLabelText: /Search tasks/ })
@@ -79,6 +97,9 @@ describe('Filter', () => {
     it('should debounce search input', async () => {
       const filtersChangedSpy = jasmine.createSpy('filtersChanged');
       component.filtersChanged.subscribe(filtersChangedSpy);
+
+      // Reset spy after initialization
+      filtersChangedSpy.calls.reset();
 
       const searchField = await loader.getHarness(
         MatFormFieldHarness.with({ floatingLabelText: /Search tasks/ })
@@ -108,6 +129,9 @@ describe('Filter', () => {
       const filtersChangedSpy = jasmine.createSpy('filtersChanged');
       component.filtersChanged.subscribe(filtersChangedSpy);
 
+      // Reset spy after initialization
+      filtersChangedSpy.calls.reset();
+
       const statusFormField = await loader.getHarness(
         MatFormFieldHarness.with({ floatingLabelText: 'Status' })
       );
@@ -116,7 +140,6 @@ describe('Filter', () => {
       await statusSelect!.open();
       await statusSelect!.clickOptions({ text: 'In Progress' });
 
-      // Em zoneless mode, precisamos aguardar o próximo tick
       await fixture.whenStable();
 
       expect(filtersChangedSpy).toHaveBeenCalledWith(
@@ -127,6 +150,9 @@ describe('Filter', () => {
     it('should emit filters when status control value changes directly', async () => {
       const filtersChangedSpy = jasmine.createSpy('filtersChanged');
       component.filtersChanged.subscribe(filtersChangedSpy);
+
+      // Reset spy after initialization
+      filtersChangedSpy.calls.reset();
 
       component.statusControl.setValue([TaskStatus.IN_PROGRESS]);
 
@@ -140,6 +166,9 @@ describe('Filter', () => {
     it('should allow multiple status selection', async () => {
       const filtersChangedSpy = jasmine.createSpy('filtersChanged');
       component.filtersChanged.subscribe(filtersChangedSpy);
+
+      // Reset spy after initialization
+      filtersChangedSpy.calls.reset();
 
       const statusFormField = await loader.getHarness(
         MatFormFieldHarness.with({ floatingLabelText: 'Status' })
@@ -165,6 +194,9 @@ describe('Filter', () => {
       const filtersChangedSpy = jasmine.createSpy('filtersChanged');
       component.filtersChanged.subscribe(filtersChangedSpy);
 
+      // Reset spy after initialization
+      filtersChangedSpy.calls.reset();
+
       const priorityFormField = await loader.getHarness(
         MatFormFieldHarness.with({ floatingLabelText: 'Priority' })
       );
@@ -184,6 +216,9 @@ describe('Filter', () => {
       const filtersChangedSpy = jasmine.createSpy('filtersChanged');
       component.filtersChanged.subscribe(filtersChangedSpy);
 
+      // Reset spy after initialization
+      filtersChangedSpy.calls.reset();
+
       component.priorityControl.setValue([Priority.HIGH, Priority.CRITICAL]);
 
       await fixture.whenStable();
@@ -198,6 +233,9 @@ describe('Filter', () => {
     it('should emit filters when assignee is selected', async () => {
       const filtersChangedSpy = jasmine.createSpy('filtersChanged');
       component.filtersChanged.subscribe(filtersChangedSpy);
+
+      // Reset spy after initialization
+      filtersChangedSpy.calls.reset();
 
       const assigneeFormField = await loader.getHarness(
         MatFormFieldHarness.with({ floatingLabelText: 'Assignee' })
@@ -224,6 +262,9 @@ describe('Filter', () => {
       const filtersChangedSpy = jasmine.createSpy('filtersChanged');
       component.filtersChanged.subscribe(filtersChangedSpy);
 
+      // Reset spy after initialization
+      filtersChangedSpy.calls.reset();
+
       component.assigneeControl.setValue(['unassigned', 'U-100']);
 
       await fixture.whenStable();
@@ -235,35 +276,39 @@ describe('Filter', () => {
   });
 
   describe('Clear Filters', () => {
-    describe('Clear Filters', () => {
-      it('should reset all form controls and emit filtersCleared', () => {
-        // Teste apenas o essencial de forma síncrona
-        spyOn(component.filtersCleared, 'emit');
+    it('should reset all form controls and emit filtersCleared', () => {
+      // Teste apenas o essencial de forma síncrona
+      spyOn(component.filtersCleared, 'emit');
 
-        // Set valores
-        component.searchControl.setValue('test');
-        component.statusControl.setValue([TaskStatus.DONE]);
+      // Set valores
+      component.searchControl.setValue('test');
+      component.statusControl.setValue([TaskStatus.DONE]);
 
-        // Clear
-        component.onClearFilters();
+      // Clear
+      component.onClearFilters();
 
-        // Verificar apenas o que é síncrono
-        expect(component.searchControl.value).toBe('');
-        expect(component.statusControl.value).toEqual([]);
-        expect(component.filtersCleared.emit).toHaveBeenCalled();
-      });
+      // Verificar apenas o que é síncrono
+      expect(component.searchControl.value).toBe('');
+      expect(component.statusControl.value).toEqual([]);
+      expect(component.filtersCleared.emit).toHaveBeenCalled();
+    });
 
-      it('should emit filtersChanged after clearing', (done) => {
-        // Teste separado para o assíncrono
-        component.filtersChanged.subscribe(() => {
+    it('should emit filtersChanged after clearing', (done) => {
+      // Subscribe to track emissions
+      let emissionCount = 0;
+      component.filtersChanged.subscribe(() => {
+        emissionCount++;
+        // Wait for second emission (first is initialization, second is after clear)
+        if (emissionCount >= 2) {
           done();
-        });
-
-        component.searchControl.setValue('test');
-        setTimeout(() => {
-          component.onClearFilters();
-        }, 10);
+        }
       });
+
+      // Set a value and then clear
+      component.searchControl.setValue('test');
+      setTimeout(() => {
+        component.onClearFilters();
+      }, 10);
     });
   });
 
@@ -274,6 +319,9 @@ describe('Filter', () => {
 
       component.overdueToggled.subscribe(overdueToggledSpy);
       component.filtersChanged.subscribe(filtersChangedSpy);
+
+      // Reset spy after initialization
+      filtersChangedSpy.calls.reset();
 
       expect(component.showOverdueOnly()).toBe(false);
 
@@ -312,6 +360,9 @@ describe('Filter', () => {
       const filtersChangedSpy = jasmine.createSpy('filtersChanged');
       component.filtersChanged.subscribe(filtersChangedSpy);
 
+      // Reset spy after initialization
+      filtersChangedSpy.calls.reset();
+
       component.searchControl.setValue('test');
       component.statusControl.setValue([TaskStatus.IN_PROGRESS]);
       component.priorityControl.setValue([Priority.HIGH]);
@@ -344,11 +395,16 @@ describe('Filter', () => {
     });
 
     it('should setup filters on ngOnInit', () => {
-      spyOn<any>(component, 'setupFilters');
+      // Create a fresh component to test ngOnInit
+      const freshFixture = TestBed.createComponent(Filter);
+      const freshComponent = freshFixture.componentInstance;
+      freshFixture.componentRef.setInput('users', mockData.users);
 
-      component.ngOnInit();
+      spyOn<any>(freshComponent, 'setupFilters');
 
-      expect(component['setupFilters']).toHaveBeenCalled();
+      freshComponent.ngOnInit();
+
+      expect(freshComponent['setupFilters']).toHaveBeenCalled();
     });
   });
 
