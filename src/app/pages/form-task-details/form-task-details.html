@@ -23,14 +23,6 @@
     @if (isEditMode() && currentTask()) {
     <div class="header-actions">
       <span class="task-id">{{ currentTask()?.uid }}</span>
-      <button
-        mat-icon-button
-        [matTooltip]="'Delete task'"
-        (click)="deleteTask()"
-        class="delete-btn"
-      >
-        <mat-icon>delete</mat-icon>
-      </button>
     </div>
     }
   </div>
@@ -48,22 +40,24 @@
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Title *</mat-label>
               <input matInput formControlName="title" placeholder="Enter task title" required />
-              @if (taskForm.get('title')?.hasError('required')) {
-              <mat-error>Title is required</mat-error>
-              } @if (taskForm.get('title')?.hasError('minlength')) {
-              <mat-error>Title must be at least 3 characters</mat-error>
+              @if (hasFieldError('title')) {
+              <mat-error class="field-error">{{ getFieldErrorMessage('title') }}</mat-error>
               }
             </mat-form-field>
 
             <!-- Description -->
             <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Description</mat-label>
+              <mat-label>Description *</mat-label>
               <textarea
                 matInput
                 formControlName="description"
                 placeholder="Enter task description"
                 rows="4"
+                required
               ></textarea>
+              @if (hasFieldError('description')) {
+              <mat-error class="field-error">{{ getFieldErrorMessage('description') }}</mat-error>
+              }
             </mat-form-field>
 
             <!-- Status (Only for edit mode) -->
@@ -103,15 +97,15 @@
                 </mat-option>
                 }
               </mat-select>
-              @if (taskForm.get('priority')?.hasError('required')) {
-              <mat-error>Priority is required</mat-error>
+              @if (hasFieldError('priority')) {
+              <mat-error class="field-error">{{ getFieldErrorMessage('priority') }}</mat-error>
               }
             </mat-form-field>
 
             <!-- Assignee -->
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Assignee</mat-label>
-              <mat-select formControlName="assigneeId">
+              <mat-select formControlName="assigneeId" panelClass="custom-select-panel">
                 <mat-option value="">No assignee</mat-option>
                 @for (user of users; track user.id) {
                 <mat-option [value]="user.id" [disabled]="user.active === false">
@@ -143,8 +137,8 @@
               <mat-hint>Select the deadline for this task</mat-hint>
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
-              @if (taskForm.get('dueDate')?.hasError('required')) {
-              <mat-error>Due date is required</mat-error>
+              @if (hasFieldError('dueDate')) {
+              <mat-error class="field-error">{{ getFieldErrorMessage('dueDate') }}</mat-error>
               }
             </mat-form-field>
           </mat-card-content>
@@ -227,21 +221,32 @@
 
     <!-- Form Actions -->
     <div class="form-actions">
-      <button type="button" mat-stroked-button (click)="goBack()" class="cancel-btn">Cancel</button>
-      <button
-        type="submit"
-        mat-raised-button
-        color="primary"
-        [disabled]="taskForm.invalid || submitting()"
-        class="submit-btn"
-      >
-        @if (submitting()) {
-        <mat-icon>hourglass_empty</mat-icon>
-        } @else {
-        <mat-icon>{{ isEditMode() ? 'update' : 'add' }}</mat-icon>
-        }
-        {{ submitting() ? 'Saving...' : isEditMode() ? 'Update Task' : 'Create Task' }}
+      @if (isEditMode() && currentTask()) {
+      <button type="button" mat-stroked-button (click)="deleteTask()" class="delete-btn">
+        <mat-icon>delete</mat-icon>
+        Delete
       </button>
+      }
+
+      <div class="action-buttons">
+        <button type="button" mat-stroked-button (click)="goBack()" class="cancel-btn">
+          Cancel
+        </button>
+        <button
+          type="submit"
+          mat-raised-button
+          color="primary"
+          [disabled]="taskForm.invalid || submitting()"
+          class="submit-btn"
+        >
+          @if (submitting()) {
+          <mat-icon>hourglass_empty</mat-icon>
+          } @else {
+          <mat-icon>{{ isEditMode() ? 'update' : 'add' }}</mat-icon>
+          }
+          {{ submitting() ? 'Saving...' : isEditMode() ? 'Update Task' : 'Create Task' }}
+        </button>
+      </div>
     </div>
   </form>
   }

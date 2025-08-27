@@ -47,22 +47,18 @@
     }
   }
 
-  gap: var(--spacing-3);
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
 
-  .task-id {
-    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-    font-size: var(--font-size-sm);
-    color: var(--text-tertiary);
-    background-color: var(--background-tertiary);
-    padding: var(--spacing-2) var(--spacing-3);
-    border-radius: var(--border-radius-sm);
-  }
-
-  .delete-btn {
-    color: var(--color-error-500);
-
-    &:hover {
-      background-color: var(--color-error-50);
+    .task-id {
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      font-size: var(--font-size-sm);
+      color: var(--text-tertiary);
+      background-color: var(--background-tertiary);
+      padding: var(--spacing-2) var(--spacing-3);
+      border-radius: var(--border-radius-sm);
     }
   }
 }
@@ -116,6 +112,47 @@
       background-color: var(--color-surface-container) !important;
     }
   }
+}
+
+// Form fields - fundo branco apenas nos inputs e selects
+::ng-deep .mat-mdc-form-field {
+  // Input e Select - fundo branco sólido
+  .mdc-text-field--outlined {
+    background-color: #ffffff !important;
+
+    [data-theme='dark'] & {
+      background-color: var(--surface-primary) !important;
+    }
+  }
+
+  // Garantir que selects também tenham fundo branco
+  &.mat-mdc-form-field-type-mat-select {
+    .mdc-text-field--outlined {
+      background-color: #ffffff !important;
+
+      [data-theme='dark'] & {
+        background-color: var(--surface-primary) !important;
+      }
+    }
+  }
+}
+
+// Panel customizado do select usando panelClass
+.custom-select-panel.mat-mdc-select-panel {
+  background-color: white !important;
+  border-radius: 12px !important;
+  box-shadow: var(--shadow-lg) !important;
+
+  [data-theme='dark'] & {
+    background-color: var(--surface-elevated) !important;
+  }
+}
+
+// Error messages styling
+.field-error {
+  font-size: var(--font-size-xs) !important;
+  color: var(--color-error-500) !important;
+  margin-top: var(--spacing-1) !important;
 }
 
 // Status and priority options
@@ -259,21 +296,40 @@
 // Form actions
 .form-actions {
   display: flex;
-  justify-content: flex-end;
-  gap: var(--spacing-3);
+  justify-content: space-between;
+  align-items: center;
   border-top: 1px solid var(--border-primary);
   padding-top: var(--spacing-6);
 
-  .submit-btn {
-    min-width: 160px;
+  .delete-btn {
+    color: var(--color-error-700);
+    border-color: var(--color-error-700);
+    min-width: 120px;
+
+    &:hover {
+      background-color: var(--color-error-50);
+    }
 
     mat-icon {
       margin-right: var(--spacing-2);
     }
   }
 
-  .cancel-btn {
-    min-width: 120px;
+  .action-buttons {
+    display: flex;
+    gap: var(--spacing-3);
+
+    .submit-btn {
+      min-width: 160px;
+
+      mat-icon {
+        margin-right: var(--spacing-2);
+      }
+    }
+
+    .cancel-btn {
+      min-width: 120px;
+    }
   }
 }
 
@@ -315,8 +371,14 @@
   }
 
   .form-actions {
-    flex-direction: column-reverse;
-    gap: var(--spacing-3);
+    flex-direction: column;
+    gap: var(--spacing-4);
+    align-items: stretch;
+
+    .action-buttons {
+      flex-direction: column-reverse;
+      gap: var(--spacing-3);
+    }
 
     button {
       width: 100%;
@@ -337,114 +399,6 @@
     .mat-mdc-card-header,
     .mat-mdc-card-content {
       padding: var(--spacing-3);
-    }
-  }
-}
-.form-container {
-  width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: var(--spacing-6);
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  min-height: 100vh;
-  box-sizing: border-box;
-}
-
-.form-header {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--spacing-4);
-  margin-bottom: var(--spacing-6);
-
-  .title-section {
-    h1 {
-      margin: 0 0 var(--spacing-2);
-      font-size: var(--font-size-3xl);
-      font-weight: var(--font-weight-bold);
-      color: var(--text-primary);
-    }
-
-    .subtitle {
-      margin: 0;
-      font-size: var(--font-size-lg);
-      color: var(--text-secondary);
-    }
-  }
-}
-
-.form-card {
-  padding: var(--spacing-8);
-
-  .form-content {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-4);
-    margin-bottom: var(--spacing-8);
-
-    .form-row {
-      display: flex;
-      gap: var(--spacing-4);
-
-      mat-form-field {
-        flex: 1;
-      }
-    }
-
-    mat-form-field {
-      width: 100%;
-
-      .mat-mdc-form-field-wrapper {
-        background-color: white !important;
-        border-radius: 12px !important;
-
-        [data-theme='dark'] & {
-          background-color: var(--color-surface-container) !important;
-        }
-      }
-    }
-  }
-
-  .form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: var(--spacing-3);
-    border-top: 1px solid var(--border-primary);
-    padding-top: var(--spacing-6);
-
-    button {
-      min-width: 120px;
-    }
-  }
-}
-
-@media (max-width: 768px) {
-  .form-container {
-    padding: var(--spacing-4);
-    max-width: 100%;
-  }
-
-  .form-card {
-    padding: var(--spacing-4);
-
-    .form-content {
-      .form-row {
-        flex-direction: column;
-        gap: var(--spacing-3);
-      }
-    }
-
-    .form-actions {
-      flex-direction: column-reverse;
-
-      button {
-        width: 100%;
-      }
-    }
-  }
-
-  .form-header {
-    .title-section h1 {
-      font-size: var(--font-size-2xl);
     }
   }
 }

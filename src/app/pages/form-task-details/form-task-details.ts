@@ -1,7 +1,13 @@
-import { Component, OnInit, signal, computed, inject } from '@angular/core';
+import { Component, OnInit, signal, computed, inject, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormControl,
+} from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -49,7 +55,9 @@ import {
     MatAutocompleteModule,
   ],
   templateUrl: './form-task-details.html',
-  styleUrl: './form-task-details.scss'
+  styleUrl: './form-task-details.scss',
+  //Use ViewEncapsulation.None for proper dropdown styling
+  encapsulation: ViewEncapsulation.None,
 })
 export class FormTaskDetails implements OnInit {
   private fb = inject(FormBuilder);
@@ -93,18 +101,21 @@ export class FormTaskDetails implements OnInit {
 
   constructor() {
     this.taskForm = this.fb.group({
-      title: ['', [Validators.required, Validators.minLength(3)]],
-      description: [''],
+      title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
+      description: [
+        '',
+        [Validators.required, Validators.minLength(10), Validators.maxLength(1000)],
+      ],
       status: [TaskStatus.PENDING],
-      priority: [Priority.MEDIUM, Validators.required],
+      priority: [Priority.MEDIUM, [Validators.required]],
       assigneeId: [''],
-      dueDate: ['', Validators.required],
+      dueDate: ['', [Validators.required]],
     });
 
     // Setup tag autocomplete
     this.filteredTags = this.tagControl.valueChanges.pipe(
       startWith(''),
-      map((value) => this._filterTags(value || '')),
+      map((value) => this._filterTags(value || ''))
     );
   }
 
@@ -177,9 +188,7 @@ export class FormTaskDetails implements OnInit {
   private _filterTags(value: string): string[] {
     const filterValue = value.toLowerCase();
     return this.availableTags.filter(
-      (tag) =>
-        tag.toLowerCase().includes(filterValue) &&
-        !this.currentTags().includes(tag),
+      (tag) => tag.toLowerCase().includes(filterValue) && !this.currentTags().includes(tag)
     );
   }
 
@@ -272,7 +281,9 @@ export class FormTaskDetails implements OnInit {
     if (!this.currentTask()) return;
 
     const confirmed = confirm(
-      `Are you sure you want to delete "${this.currentTask()?.title}"? This action cannot be undone.`,
+      `Are you sure you want to delete "${
+        this.currentTask()?.title
+      }"? This action cannot be undone.`
     );
 
     if (confirmed) {
@@ -302,6 +313,47 @@ export class FormTaskDetails implements OnInit {
       const control = formGroup.get(key);
       control?.markAsTouched();
     });
+  }
+
+  // Error message helpers
+  getFieldErrorMessage(fieldName: string): string {
+    const field = this.taskForm.get(fieldName);
+    if (!field || !field.errors || !field.touched) {
+      return '';
+    }
+
+    const errors = field.errors;
+
+    if (errors['required']) {
+      return `${this.getFieldLabel(fieldName)} is required`;
+    }
+
+    if (errors['minlength']) {
+      const minLength = errors['minlength'].requiredLength;
+      return `Minimum ${minLength} characters required`;
+    }
+
+    if (errors['maxlength']) {
+      const maxLength = errors['maxlength'].requiredLength;
+      return `Maximum ${maxLength} characters allowed`;
+    }
+
+    return 'Invalid input';
+  }
+
+  private getFieldLabel(fieldName: string): string {
+    const labels: { [key: string]: string } = {
+      title: 'Title',
+      description: 'Description',
+      priority: 'Priority',
+      dueDate: 'Due date',
+    };
+    return labels[fieldName] || fieldName;
+  }
+
+  hasFieldError(fieldName: string): boolean {
+    const field = this.taskForm.get(fieldName);
+    return !!(field && field.invalid && field.touched);
   }
 
   // Utility methods
