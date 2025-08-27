@@ -1,0 +1,52 @@
+<div class="tasks-container">
+  <!-- Header Section -->
+  <div class="tasks-header">
+    <div class="header-content">
+      <div class="title-section">
+        <h1>Task Management</h1>
+        <p class="subtitle">Manage and track all tasks across teams and projects</p>
+      </div>
+      <div class="header-actions">
+        <button mat-raised-button color="primary" class="create-btn" (click)="openCreateDialog()">
+          <mat-icon>add</mat-icon>
+          New Task
+        </button>
+      </div>
+    </div>
+
+    <!-- Stats Cards Component -->
+    <app-stats-cards
+      [pendingCount]="pendingCount()"
+      [inProgressCount]="inProgressCount()"
+      [doneCount]="doneCount()"
+      [totalCount]="totalCount()"
+      [overdueCount]="overdueCount()"
+    ></app-stats-cards>
+  </div>
+
+  <!-- Filter Component -->
+  <app-filter
+    [users]="users()"
+    [showOverdueOnly]="showOverdueOnly()"
+    (filtersChanged)="onFiltersChanged($event)"
+    (overdueToggled)="onOverdueToggled($event)"
+    (filtersCleared)="onFiltersCleared()"
+  ></app-filter>
+
+  <!-- Table Component -->
+  <app-table
+    [tasks]="tasks()"
+    [loading]="loading()"
+    [displayedColumns]="displayedColumns()"
+    [paginatorOptions]="paginatorOptions()"
+    [pageSize]="pageSize()"
+    (taskView)="viewTask($event)"
+    (taskEdit)="editTask($event)"
+    (taskDuplicate)="duplicateTask($event)"
+    (taskDelete)="deleteTask($event)"
+    (refresh)="loadData()"
+    (export)="exportData()"
+    (clearFilters)="onFiltersCleared()"
+    (pageChange)="onPageChange($event)"
+  ></app-table>
+</div>

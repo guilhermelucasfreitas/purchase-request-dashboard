@@ -1,0 +1,69 @@
+<div class="sidenav-content" [class.collapsed]="isCollapsed()">
+  <div class="sidenav-header">
+    <div class="logo-container">
+      <mat-icon class="logo-icon">shopping_cart</mat-icon>
+      <h2 class="logo-text" [class.hidden]="isCollapsed()">Task Pro</h2>
+    </div>
+    @if (!isHandset()) {
+    <button mat-icon-button class="collapse-btn" (click)="onToggleCollapse()">
+      <mat-icon>{{ isCollapsed() ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+    </button>
+    }
+  </div>
+
+  <mat-nav-list class="nav-list">
+    <a
+      mat-list-item
+      routerLink="/tasks"
+      routerLinkActive="active-link"
+      class="nav-item"
+      [matTooltip]="isCollapsed() ? 'Tasks' : ''"
+      matTooltipPosition="right"
+      (click)="onNavItemClick()"
+    >
+      <mat-icon matListItemIcon>assignment</mat-icon>
+      <span matListItemTitle [class.hidden]="isCollapsed()">Task List</span>
+    </a>
+
+    <a
+      mat-list-item
+      routerLink="/users"
+      routerLinkActive="active-link"
+      class="nav-item"
+      [matTooltip]="isCollapsed() ? 'Users' : ''"
+      matTooltipPosition="right"
+      (click)="onNavItemClick()"
+    >
+      <mat-icon matListItemIcon>people</mat-icon>
+      <span matListItemTitle [class.hidden]="isCollapsed()">Users</span>
+    </a>
+
+    <a
+      mat-list-item
+      routerLink="/settings"
+      routerLinkActive="active-link"
+      class="nav-item"
+      [matTooltip]="isCollapsed() ? 'Settings' : ''"
+      matTooltipPosition="right"
+      (click)="onNavItemClick()"
+    >
+      <mat-icon matListItemIcon>settings</mat-icon>
+      <span matListItemTitle [class.hidden]="isCollapsed()">Settings</span>
+    </a>
+  </mat-nav-list>
+
+  <div class="sidenav-footer">
+    <button
+      mat-icon-button
+      class="theme-toggle"
+      (click)="onToggleTheme()"
+      [matTooltip]="isDarkMode() ? 'Switch to light mode' : 'Switch to dark mode'"
+      matTooltipPosition="right"
+    >
+      <mat-icon>{{ isDarkMode() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+    </button>
+    <span class="theme-label" [class.hidden]="isCollapsed()">
+      {{ isDarkMode() ? 'Light Mode' : 'Dark Mode' }}
+    </span>
+  </div>
+</div>

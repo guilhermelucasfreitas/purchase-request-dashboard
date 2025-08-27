@@ -1,0 +1,120 @@
+// Stats Cards
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-4);
+
+  .stat-card {
+    background-color: var(--surface-primary);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-6);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-4);
+    transition: all 0.2s ease;
+
+    &:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    &.overdue {
+      border-color: var(--color-warning-200);
+      background-color: var(--color-warning-50);
+
+      [data-theme='dark'] & {
+        background-color: rgba(255, 152, 0, 0.1);
+        border-color: var(--color-warning-700);
+      }
+    }
+
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--border-radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      mat-icon {
+        font-size: 24px;
+        width: 24px;
+        height: 24px;
+        color: white;
+      }
+
+      &.pending {
+        background: linear-gradient(135deg, var(--color-warning-500), var(--color-warning-700));
+      }
+
+      &.in-progress {
+        background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-700));
+      }
+
+      &.done {
+        background: linear-gradient(135deg, var(--color-success-500), var(--color-success-700));
+      }
+
+      &.total {
+        background: linear-gradient(135deg, var(--color-secondary-500), var(--color-secondary-700));
+      }
+
+      &.overdue {
+        background: linear-gradient(135deg, var(--color-warning-500), var(--color-warning-700));
+      }
+    }
+
+    .stat-content {
+      h3 {
+        margin: 0 0 var(--spacing-1);
+        font-size: var(--font-size-2xl);
+        font-weight: var(--font-weight-bold);
+        color: var(--text-primary);
+      }
+
+      p {
+        margin: 0;
+        font-size: var(--font-size-sm);
+        color: var(--text-secondary);
+        font-weight: var(--font-weight-medium);
+      }
+    }
+  }
+}
+
+// Focus and accessibility
+.stat-card:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
+// Responsive design for stats cards
+@media (max-width: 1200px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 375px) {
+  .stats-grid .stat-card {
+    padding: var(--spacing-4);
+
+    .stat-icon {
+      width: 40px;
+      height: 40px;
+
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+}

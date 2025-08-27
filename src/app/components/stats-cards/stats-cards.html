@@ -1,0 +1,53 @@
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-icon pending">
+      <mat-icon>schedule</mat-icon>
+    </div>
+    <div class="stat-content">
+      <h3>{{ pendingCount() }}</h3>
+      <p>Pending</p>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon in-progress">
+      <mat-icon>play_circle</mat-icon>
+    </div>
+    <div class="stat-content">
+      <h3>{{ inProgressCount() }}</h3>
+      <p>In Progress</p>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon done">
+      <mat-icon>check_circle</mat-icon>
+    </div>
+    <div class="stat-content">
+      <h3>{{ doneCount() }}</h3>
+      <p>Completed</p>
+    </div>
+  </div>
+
+  @if (overdueCount() > 0) {
+  <div class="stat-card overdue">
+    <div class="stat-icon overdue">
+      <mat-icon>warning</mat-icon>
+    </div>
+    <div class="stat-content">
+      <h3>{{ overdueCount() }}</h3>
+      <p>Overdue</p>
+    </div>
+  </div>
+  } @else {
+  <div class="stat-card">
+    <div class="stat-icon total">
+      <mat-icon>assignment</mat-icon>
+    </div>
+    <div class="stat-content">
+      <h3>{{ totalCount() }}</h3>
+      <p>Total Tasks</p>
+    </div>
+  </div>
+  }
+</div>

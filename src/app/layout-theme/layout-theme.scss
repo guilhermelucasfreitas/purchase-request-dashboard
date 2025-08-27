@@ -1,0 +1,142 @@
+.layout-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidenav-container {
+  flex: 1;
+  background-color: var(--background-primary);
+}
+
+.sidenav {
+  width: 280px;
+  background-color: var(--surface-primary);
+  border-right: 1px solid var(--border-primary);
+  transition: width 0.3s ease;
+
+  &.mat-drawer-side {
+    border-right: 1px solid var(--border-primary);
+  }
+
+  // Collapsed state
+  &.collapsed {
+    width: 64px;
+  }
+}
+
+.main-content {
+  background-color: var(--background-primary);
+  min-height: 100vh;
+}
+
+.toolbar {
+  background-color: var(--surface-primary);
+  border-bottom: 1px solid var(--border-primary);
+  color: var(--text-primary);
+  height: 64px;
+  padding: 0 var(--spacing-4);
+
+  &.expanded {
+    margin-left: 280px;
+
+    @media (max-width: 768px) {
+      margin-left: 0;
+    }
+  }
+
+  &.collapsed {
+    margin-left: 64px;
+
+    @media (max-width: 768px) {
+      margin-left: 0;
+    }
+  }
+
+  .toolbar-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    .page-title {
+      margin: 0;
+      font-size: var(--font-size-xl);
+      font-weight: var(--font-weight-semibold);
+      color: var(--text-primary);
+    }
+
+    .toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+
+      button {
+        color: var(--text-secondary);
+
+        &:hover {
+          background-color: var(--background-tertiary);
+          color: var(--text-primary);
+        }
+      }
+    }
+  }
+}
+
+.page-content {
+  padding: var(--spacing-6);
+  min-height: calc(100vh - 64px);
+
+  @media (max-width: 768px) {
+    padding: var(--spacing-4);
+  }
+
+  @media (max-width: 375px) {
+    padding: var(--spacing-3);
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .sidenav {
+    width: 280px; // Full width on mobile when open
+  }
+
+  .toolbar.expanded {
+    margin-left: 0;
+  }
+
+  .page-content {
+    padding: var(--spacing-4);
+  }
+}
+
+@media (max-width: 375px) {
+  .sidenav {
+    width: 100vw; // Full viewport width on small mobile
+  }
+
+  .page-content {
+    padding: var(--spacing-3);
+  }
+
+  .toolbar {
+    .page-title {
+      font-size: var(--font-size-lg);
+    }
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .sidenav {
+    border-right: 2px solid var(--border-secondary);
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .sidenav {
+    transition: none;
+  }
+}
