@@ -1,92 +1,9 @@
-// Filters Section
-.filters-card {
-  margin-bottom: var(--spacing-6);
-  border: 1px solid var(--border-primary);
-
-  .filters-content {
-    padding: var(--spacing-6);
-
-    .search-section {
-      margin-bottom: var(--spacing-4);
-
-      .search-field {
-        width: 100%;
-        max-width: 400px;
-
-        .mat-mdc-form-field-wrapper {
-          background-color: white !important;
-          border-radius: 12px !important;
-
-          [data-theme="dark"] & {
-            background-color: var(--color-surface-container) !important;
-          }
-        }
-      }
-    }
-
-    .filter-section {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--spacing-4);
-      align-items: center;
-
-      .filter-field {
-        min-width: 160px;
-        flex: 1;
-        max-width: 200px;
-
-        .mat-mdc-form-field-wrapper {
-          background-color: white !important;
-          border-radius: 12px !important;
-
-          [data-theme="dark"] & {
-            background-color: var(--color-surface-container) !important;
-          }
-        }
-      }
-
-      .filter-toggles {
-        display: flex;
-        gap: var(--spacing-2);
-
-        .overdue-toggle {
-          &[color="warn"] {
-            background-color: var(--color-warning-50);
-            color: var(--color-warning-700);
-            border-color: var(--color-warning-200);
-
-            [data-theme="dark"] & {
-              background-color: rgba(255, 152, 0, 0.1);
-              color: var(--color-warning-300);
-              border-color: var(--color-warning-700);
-            }
-          }
-
-          mat-icon {
-            margin-right: var(--spacing-2);
-          }
-        }
-      }
-
-      .clear-filters-btn {
-        color: var(--text-secondary);
-        border-color: var(--border-secondary);
-
-        &:hover {
-          background-color: var(--background-tertiary);
-        }
-
-      }
-    }
-  }
-}.tasks-container {
+.tasks-container {
   width: 100%;
-  max-width: none; // Remove max-width fixo
+  max-width: none;
   margin: 0;
-  padding: var(--spacing-6); // Adiciona padding interno
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); // Transição suave
-  
-  // Garante que o container se adapte ao espaço disponível
+  padding: var(--spacing-6);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   min-height: 100vh;
   box-sizing: border-box;
 }
@@ -128,78 +45,10 @@
     }
   }
 
-  // Stats Cards component will handle its own spacing
+  // Stats Cards component spacing
   app-stats-cards {
     display: block;
     margin-top: var(--spacing-6);
-  }
-}
-
-// Filters Section
-.filters-card {
-  margin-bottom: var(--spacing-6);
-  border: 1px solid var(--border-primary);
-
-  .filters-content {
-    padding: var(--spacing-6);
-
-    .search-section {
-      margin-bottom: var(--spacing-4);
-
-      .search-field {
-        width: 100%;
-        max-width: 400px;
-      }
-    }
-
-    .filter-section {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--spacing-4);
-      align-items: center;
-
-      .filter-field {
-        min-width: 160px;
-        flex: 1;
-        max-width: 200px;
-      }
-
-      .filter-toggles {
-        display: flex;
-        gap: var(--spacing-2);
-
-        .overdue-toggle {
-          &[color="warn"] {
-            background-color: var(--color-error-50);
-            color: var(--color-error-700);
-            border-color: var(--color-error-200);
-
-            [data-theme="dark"] & {
-              background-color: rgba(244, 67, 54, 0.1);
-              color: var(--color-error-300);
-              border-color: var(--color-error-700);
-            }
-          }
-
-          mat-icon {
-            margin-right: var(--spacing-2);
-          }
-        }
-      }
-
-      .clear-filters-btn {
-        color: var(--text-secondary);
-        border-color: var(--border-secondary);
-
-        &:hover {
-          background-color: var(--background-tertiary);
-        }
-
-        mat-icon {
-          margin-right: var(--spacing-2);
-        }
-      }
-    }
   }
 }
 
