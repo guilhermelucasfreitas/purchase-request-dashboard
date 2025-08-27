@@ -19,7 +19,6 @@ import { mockData } from './mock-data';
   providedIn: 'root',
 })
 export class TaskService {
-  // Agora simplesmente importamos os dados do arquivo separado
   private mockData: MockData = mockData;
 
   // State management with signals

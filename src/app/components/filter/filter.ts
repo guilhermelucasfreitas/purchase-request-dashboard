@@ -40,10 +40,10 @@ export class Filter implements OnInit, OnDestroy {
   filtersCleared = output<void>();
 
   // Form controls
-  searchControl = new FormControl('');
-  statusControl = new FormControl([]);
-  priorityControl = new FormControl([]);
-  assigneeControl = new FormControl([]);
+  searchControl = new FormControl<string>('');
+  statusControl = new FormControl<TaskStatus[]>([]);
+  priorityControl = new FormControl<Priority[]>([]);
+  assigneeControl = new FormControl<string[]>([]);
 
   // Filter options
   statusOptions = [

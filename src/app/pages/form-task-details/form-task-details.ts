@@ -1,4 +1,12 @@
-import { Component, OnInit, signal, computed, inject, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  signal,
+  computed,
+  inject,
+  ViewEncapsulation,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -22,7 +30,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { Observable, map, startWith } from 'rxjs';
+import { Observable, map, startWith, Subject, takeUntil } from 'rxjs';
 
 import { TaskService } from '../../services/task.service';
 import {
@@ -59,12 +67,13 @@ import {
   //Use ViewEncapsulation.None for proper dropdown styling
   encapsulation: ViewEncapsulation.None,
 })
-export class FormTaskDetails implements OnInit {
+export class FormTaskDetails implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private taskService = inject(TaskService);
   private snackBar = inject(MatSnackBar);
+  private destroy$ = new Subject<void>();
 
   // State
   loading = signal(false);
@@ -115,7 +124,8 @@ export class FormTaskDetails implements OnInit {
     // Setup tag autocomplete
     this.filteredTags = this.tagControl.valueChanges.pipe(
       startWith(''),
-      map((value) => this._filterTags(value || ''))
+      map((value) => this._filterTags(value || '')),
+      takeUntil(this.destroy$)
     );
   }
 
@@ -133,6 +143,11 @@ export class FormTaskDetails implements OnInit {
         dueDate: defaultDueDate,
       });
     }
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private loadTask() {

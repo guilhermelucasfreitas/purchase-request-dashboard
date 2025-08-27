@@ -114,9 +114,9 @@
   }
 }
 
-// Form fields - fundo branco apenas nos inputs e selects
+// Form fields - white background for inputs and selects only
 ::ng-deep .mat-mdc-form-field {
-  // Input e Select - fundo branco sólido
+  // Input and Select - solid white background
   .mdc-text-field--outlined {
     background-color: #ffffff !important;
 
@@ -125,7 +125,7 @@
     }
   }
 
-  // Garantir que selects também tenham fundo branco
+  // Ensure selects also have white background
   &.mat-mdc-form-field-type-mat-select {
     .mdc-text-field--outlined {
       background-color: #ffffff !important;
@@ -137,7 +137,7 @@
   }
 }
 
-// Panel customizado do select usando panelClass
+// Custom select panel using panelClass
 .custom-select-panel.mat-mdc-select-panel {
   background-color: white !important;
   border-radius: 12px !important;
@@ -302,13 +302,10 @@
   padding-top: var(--spacing-6);
 
   .delete-btn {
-    color: var(--color-error-700);
-    border-color: var(--color-error-700);
+    background-color: var(--color-error-500);
+    color: var(--color-gray-50);
+    border-color: var(--color-error-500);
     min-width: 120px;
-
-    &:hover {
-      background-color: var(--color-error-50);
-    }
 
     mat-icon {
       margin-right: var(--spacing-2);
@@ -321,6 +318,14 @@
 
     .submit-btn {
       min-width: 160px;
+      background-color: var(--color-secondary-500);
+      color: var(--color-gray-50);
+      border-color: var(--color-secondary-500);
+
+      &:hover {
+        background-color: var(--color-secondary-600);
+        border-color: var(--color-secondary-600);
+      }
 
       mat-icon {
         margin-right: var(--spacing-2);
@@ -375,9 +380,22 @@
     gap: var(--spacing-4);
     align-items: stretch;
 
+    .delete-btn {
+      order: 3; // Delete button last
+    }
+
     .action-buttons {
-      flex-direction: column-reverse;
+      flex-direction: column;
       gap: var(--spacing-3);
+      order: 1;
+
+      .submit-btn {
+        order: 1; // Update Task first
+      }
+
+      .cancel-btn {
+        order: 2; // Cancel below
+      }
     }
 
     button {
@@ -388,6 +406,23 @@
   .form-section .mat-mdc-card-content {
     padding: var(--spacing-4);
   }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.no-tags {
+  font-style: italic;
+  color: var(--mdc-theme-text-hint-on-background, rgba(0, 0, 0, 0.6));
 }
 
 @media (max-width: 480px) {

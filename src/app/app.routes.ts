@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { LayoutTheme } from './layout-theme/layout-theme';
 
-export const routes: Routes = [
+export const APP_ROUTE: Routes = [
   {
     path: '',
     component: LayoutTheme,

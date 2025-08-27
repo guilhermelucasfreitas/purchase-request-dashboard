@@ -64,7 +64,7 @@
             @if (isEditMode()) {
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Status</mat-label>
-              <mat-select formControlName="status">
+              <mat-select formControlName="status" panelClass="custom-select-panel">
                 @for (status of statusOptions; track status.value) {
                 <mat-option [value]="status.value">
                   <div class="status-option">
@@ -87,7 +87,7 @@
             <!-- Priority -->
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Priority *</mat-label>
-              <mat-select formControlName="priority" required>
+              <mat-select formControlName="priority" required panelClass="custom-select-panel">
                 @for (priority of priorityOptions; track priority.value) {
                 <mat-option [value]="priority.value">
                   <div class="priority-option">
