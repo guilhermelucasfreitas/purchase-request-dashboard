@@ -26,25 +26,33 @@ export class TaskService {
   private _loading = signal<boolean>(false);
   private _error = signal<string | null>(null);
 
+  //signal to save filtered tasks
+  private _filteredTasks = signal<Task[]>(this.mockData.tasks);
+
   // Public readonly signals
   readonly tasks = this._tasks.asReadonly();
   readonly loading = this._loading.asReadonly();
   readonly error = this._error.asReadonly();
 
-  // Computed values
-  readonly totalTasks = computed(() => this._tasks().length);
+  readonly totalTasks = computed(() => this._filteredTasks().length);
   readonly pendingTasks = computed(
-    () => this._tasks().filter((task) => task.status === TaskStatus.PENDING).length
+    () => this._filteredTasks().filter((task) => task.status === TaskStatus.PENDING).length
   );
+
   readonly inProgressTasks = computed(
-    () => this._tasks().filter((task) => task.status === TaskStatus.IN_PROGRESS).length
+    () => this._filteredTasks().filter((task) => task.status === TaskStatus.IN_PROGRESS).length
   );
+
+  readonly inReviewTasks = computed(
+    () => this._filteredTasks().filter((task) => task.status === TaskStatus.IN_REVIEW).length
+  );
+
   readonly doneTasks = computed(
-    () => this._tasks().filter((task) => task.status === TaskStatus.DONE).length
+    () => this._filteredTasks().filter((task) => task.status === TaskStatus.DONE).length
   );
   readonly overdueTasks = computed(
     () =>
-      this._tasks().filter(
+      this._filteredTasks().filter(
         (task) => new Date(task.dueDate) < new Date() && task.status !== TaskStatus.DONE
       ).length
   );
@@ -70,7 +78,9 @@ export class TaskService {
             filteredTasks = this.applyFilters(filteredTasks, filters);
           }
 
-          // Apply sorting
+          //update the signal with the filtered list BEFORE paging
+          this._filteredTasks.set(filteredTasks);
+
           if (sorting) {
             filteredTasks = this.applySorting(filteredTasks, sorting);
           }
@@ -96,6 +106,7 @@ export class TaskService {
         } catch (error) {
           this._loading.set(false);
           this._error.set('Failed to load tasks');
+          this._filteredTasks.set([]);
           observer.error(error);
         }
       }, 800); // Simulate network delay

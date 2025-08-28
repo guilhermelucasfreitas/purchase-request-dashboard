@@ -27,7 +27,6 @@
       aria-labelledby="tasks-heading"
       id="tasks-list"
     >
-      <!-- ID Column -->
       <ng-container matColumnDef="uid">
         <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">ID</th>
         <td mat-cell *matCellDef="let task" role="gridcell">
@@ -35,7 +34,6 @@
         </td>
       </ng-container>
 
-      <!-- Title Column -->
       <ng-container matColumnDef="title">
         <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">Title</th>
         <td mat-cell *matCellDef="let task" role="gridcell">
@@ -58,7 +56,6 @@
         </td>
       </ng-container>
 
-      <!-- Assignee Column -->
       <ng-container matColumnDef="assignee">
         <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">Assignee</th>
         <td mat-cell *matCellDef="let task" role="gridcell">
@@ -88,7 +85,6 @@
         </td>
       </ng-container>
 
-      <!-- Status Column -->
       <ng-container matColumnDef="status">
         <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">Status</th>
         <td mat-cell *matCellDef="let task" role="gridcell">
@@ -102,7 +98,6 @@
         </td>
       </ng-container>
 
-      <!-- Priority Column -->
       <ng-container matColumnDef="priority">
         <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">Priority</th>
         <td mat-cell *matCellDef="let task" role="gridcell">
@@ -115,7 +110,6 @@
         </td>
       </ng-container>
 
-      <!-- Due Date Column -->
       <ng-container matColumnDef="dueDate">
         <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">Due Date</th>
         <td mat-cell *matCellDef="let task" role="gridcell">
@@ -129,7 +123,6 @@
         </td>
       </ng-container>
 
-      <!-- Actions Column -->
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef scope="col">Actions</th>
         <td mat-cell *matCellDef="let task" role="gridcell">
@@ -158,7 +151,6 @@
       ></tr>
     </table>
 
-    <!-- No Data State -->
     @if (!loading() && dataSource.data.length === 0) {
     <div class="no-data" role="region" aria-live="polite">
       <mat-icon aria-hidden="true">assignment</mat-icon>
@@ -171,8 +163,10 @@
 
   <mat-paginator
     #paginator
+    [length]="totalTasksCount()"
     [pageSizeOptions]="paginatorOptions()"
     [pageSize]="pageSize()"
+    [pageIndex]="currentPage()"
     showFirstLastButtons
     (page)="onPageChange($event)"
     aria-label="Task list pagination controls"
@@ -180,7 +174,6 @@
   </mat-paginator>
 </mat-card>
 
-<!-- Actions Menu -->
 <mat-menu #actionsMenu="matMenu">
   <ng-template matMenuContent let-task="task">
     <button mat-menu-item (click)="onTaskView(task)">

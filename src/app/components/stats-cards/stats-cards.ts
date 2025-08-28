@@ -13,6 +13,6 @@ export class StatsCards {
   pendingCount = input.required<number>();
   inProgressCount = input.required<number>();
   doneCount = input.required<number>();
-  totalCount = input.required<number>();
+  inReviewCount = input.required<number>();
   overdueCount = input.required<number>();
 }

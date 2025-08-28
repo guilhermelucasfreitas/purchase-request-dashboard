@@ -11,6 +11,16 @@
     </div>
   </div>
 
+  <div class="stat-card" [attr.aria-label]="inReviewCount() + ' tasks in review'">
+    <div class="stat-icon in-review" aria-hidden="true">
+      <mat-icon>rate_review</mat-icon>
+    </div>
+    <div class="stat-content">
+      <h3>{{ inReviewCount() }}</h3>
+      <p>In Review</p>
+    </div>
+  </div>
+
   <div class="stat-card" [attr.aria-label]="pendingCount() + ' tasks pending'">
     <div class="stat-icon pending" aria-hidden="true">
       <mat-icon>schedule</mat-icon>
@@ -32,23 +42,13 @@
   </div>
 
   @if (overdueCount() > 0) {
-  <div class="stat-card overdue" [attr.aria-label]="overdueCount() + ' tasks overdue'" role="alert">
+  <div class="stat-card" [attr.aria-label]="overdueCount() + ' tasks overdue'" role="alert">
     <div class="stat-icon overdue" aria-hidden="true">
       <mat-icon>warning</mat-icon>
     </div>
     <div class="stat-content">
       <h3>{{ overdueCount() }}</h3>
       <p>Overdue</p>
-    </div>
-  </div>
-  } @else {
-  <div class="stat-card" [attr.aria-label]="totalCount() + ' total tasks'">
-    <div class="stat-icon total" aria-hidden="true">
-      <mat-icon>assignment</mat-icon>
-    </div>
-    <div class="stat-content">
-      <h3>{{ totalCount() }}</h3>
-      <p>Total Tasks</p>
     </div>
   </div>
   }

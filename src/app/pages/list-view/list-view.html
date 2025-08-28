@@ -27,7 +27,7 @@
       [pendingCount]="pendingCount()"
       [inProgressCount]="inProgressCount()"
       [doneCount]="doneCount()"
-      [totalCount]="totalCount()"
+      [inReviewCount]="inReviewCount()"
       [overdueCount]="overdueCount()"
     ></app-stats-cards>
   </header>
@@ -52,6 +52,8 @@
     [displayedColumns]="displayedColumns()"
     [paginatorOptions]="paginatorOptions()"
     [pageSize]="pageSize()"
+    [totalTasksCount]="totalTasksCount()"
+    [currentPage]="currentPage()"
     (taskView)="viewTask($event)"
     (taskEdit)="editTask($event)"
     (taskDuplicate)="duplicateTask($event)"

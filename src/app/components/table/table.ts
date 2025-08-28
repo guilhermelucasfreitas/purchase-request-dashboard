@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, input, output, ViewChild, computed, OnInit, effect } from '@angular/core';
+import { AfterViewInit, Component, input, output, ViewChild, effect } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
@@ -32,9 +32,9 @@ import { getStatusIcon } from '../../models/task.constants';
     MatDividerModule,
   ],
   templateUrl: './table.html',
-  styleUrl: './table.scss'
+  styleUrl: './table.scss',
 })
-export class Table implements OnInit, AfterViewInit {
+export class Table implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -52,6 +52,9 @@ export class Table implements OnInit, AfterViewInit {
   ]);
   paginatorOptions = input<number[]>([5, 10, 25, 50]);
   pageSize = input<number>(10);
+
+  totalTasksCount = input<number>(0);
+  currentPage = input<number>(0);
 
   // Output signals
   taskView = output<Task>();
@@ -71,13 +74,7 @@ export class Table implements OnInit, AfterViewInit {
     this.dataSource.data = this.tasks();
   });
 
-  ngOnInit() {
-    // Initialize dataSource with initial tasks
-    this.dataSource.data = this.tasks();
-  }
-
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 

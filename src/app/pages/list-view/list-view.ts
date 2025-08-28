@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,7 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { PageEvent } from '@angular/material/paginator';
-import { Task, TaskStatus, TaskFilters, PaginationParams, User } from '../../models/task.model';
+import { Task, TaskFilters, PaginationParams, User } from '../../models/task.model';
 import { TaskService } from '../../services/task.service';
 import { Filter } from '../../components/filter/filter';
 import { Table } from '../../components/table/table';
@@ -58,29 +58,21 @@ export class ListView implements OnInit {
   pageSize = signal<number>(10);
   currentPage = signal<number>(0);
 
+  totalTasksCount = signal<number>(0);
+
   // Current filters state
   private currentFilters = signal<TaskFilters>({});
 
-  // Computed values for stats
-  pendingCount = computed(
-    () => this.tasks().filter((task) => task.status === TaskStatus.PENDING).length
-  );
+ 
+  private taskService = inject(TaskService);
 
-  inProgressCount = computed(
-    () => this.tasks().filter((task) => task.status === TaskStatus.IN_PROGRESS).length
-  );
+  readonly pendingCount = this.taskService.pendingTasks;
+  readonly inProgressCount = this.taskService.inProgressTasks;
+  readonly inReviewCount = this.taskService.inReviewTasks;
+  readonly doneCount = this.taskService.doneTasks;
+  readonly overdueCount = this.taskService.overdueTasks;
 
-  doneCount = computed(() => this.tasks().filter((task) => task.status === TaskStatus.DONE).length);
-
-  totalCount = computed(() => this.tasks().length);
-
-  overdueCount = computed(() => this.tasks().filter((task) => this.isOverdue(task)).length);
-
-  constructor(
-    private taskService: TaskService,
-    private snackBar: MatSnackBar,
-    private router: Router
-  ) {}
+  constructor(private snackBar: MatSnackBar, private router: Router) {}
 
   ngOnInit() {
     this.loadUsers();
@@ -121,12 +113,12 @@ export class ListView implements OnInit {
     this.loading.set(true);
     this.error.set(null);
 
-    // Use provided filters or current filters
     const filtersToApply = filters || this.currentFilters();
 
     this.taskService.getTasks(filtersToApply, undefined, pagination).subscribe({
       next: (response) => {
         this.tasks.set(response.data);
+        this.totalTasksCount.set(response.total);
         this.loading.set(false);
       },
       error: (error) => {
@@ -184,10 +176,5 @@ export class ListView implements OnInit {
 
   exportData() {
     this.snackBar.open('Export functionality will be implemented', 'Close', { duration: 3000 });
-  }
-
-  // Utility method
-  private isOverdue(task: Task): boolean {
-    return new Date(task.dueDate) < new Date() && task.status !== TaskStatus.DONE;
   }
 }
