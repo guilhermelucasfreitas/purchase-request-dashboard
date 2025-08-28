@@ -1,11 +1,11 @@
-<mat-card class="table-card">
+<mat-card class="table-card" role="region" aria-labelledby="tasks-heading">
   <div class="table-header">
-    <h2>Tasks</h2>
+    <h2 id="tasks-heading">Tasks</h2>
     <div class="table-actions">
-      <button mat-icon-button [matTooltip]="'Refresh'" (click)="onRefresh()">
+      <button mat-icon-button aria-label="Refresh tasks" (click)="onRefresh()">
         <mat-icon>refresh</mat-icon>
       </button>
-      <button mat-icon-button [matTooltip]="'Export'" (click)="onExport()">
+      <button mat-icon-button aria-label="Export tasks" (click)="onExport()">
         <mat-icon>download</mat-icon>
       </button>
     </div>
@@ -13,35 +13,44 @@
 
   <div class="table-container" [class.loading]="loading()">
     @if (loading()) {
-    <div class="loading-overlay">
+    <div class="loading-overlay" role="status" aria-live="polite">
       <mat-spinner diameter="40"></mat-spinner>
       <p>Loading tasks...</p>
     </div>
     }
 
-    <table mat-table [dataSource]="dataSource" matSort class="tasks-table">
+    <table
+      mat-table
+      [dataSource]="dataSource"
+      matSort
+      class="tasks-table"
+      aria-labelledby="tasks-heading"
+      id="tasks-list"
+    >
       <!-- ID Column -->
       <ng-container matColumnDef="uid">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-        <td mat-cell *matCellDef="let task">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">ID</th>
+        <td mat-cell *matCellDef="let task" role="gridcell">
           <span class="task-id">{{ task.uid }}</span>
         </td>
       </ng-container>
 
       <!-- Title Column -->
       <ng-container matColumnDef="title">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
-        <td mat-cell *matCellDef="let task">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">Title</th>
+        <td mat-cell *matCellDef="let task" role="gridcell">
           <div class="title-cell">
             <span class="title" [matTooltip]="task.title">{{ task.title }}</span>
             @if (task.tags && task.tags.length > 0) {
-            <div class="tags">
+            <div class="tags" role="list" [aria-label]="'Tags for ' + task.title">
               @for (tag of task.tags.slice(0, 3); track tag) {
-              <mat-chip class="tag-chip">
+              <mat-chip class="tag-chip" role="listitem">
                 {{ tag }}
               </mat-chip>
               } @if (task.tags.length > 3) {
-              <span class="more-tags"> +{{ task.tags.length - 3 }} more </span>
+              <span class="more-tags" aria-label="+{{ task.tags.length - 3 }} more tags">
+                +{{ task.tags.length - 3 }} more
+              </span>
               }
             </div>
             }
@@ -51,8 +60,8 @@
 
       <!-- Assignee Column -->
       <ng-container matColumnDef="assignee">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Assignee</th>
-        <td mat-cell *matCellDef="let task">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">Assignee</th>
+        <td mat-cell *matCellDef="let task" role="gridcell">
           @if (task.assignee) {
           <div class="assignee-cell">
             <div class="avatar" [class.inactive]="task.assignee.active === false">
@@ -61,7 +70,7 @@
                 [alt]="task.assignee.name"
                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
               />
-              <span class="initials">{{ getInitials(task.assignee.name) }}</span>
+              <span class="initials" aria-hidden="true">{{ getInitials(task.assignee.name) }}</span>
             </div>
             <div class="assignee-info">
               <span class="name" [class.inactive]="task.assignee.active === false">
@@ -72,7 +81,7 @@
           </div>
           } @else {
           <div class="unassigned">
-            <mat-icon>person_outline</mat-icon>
+            <mat-icon aria-hidden="true">person_outline</mat-icon>
             <span>Unassigned</span>
           </div>
           }
@@ -81,10 +90,13 @@
 
       <!-- Status Column -->
       <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
-        <td mat-cell *matCellDef="let task">
-          <mat-chip [class]="'status-chip status-' + getStatusClass(task.status)">
-            <mat-icon>{{ getStatusIcon(task.status) }}</mat-icon>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">Status</th>
+        <td mat-cell *matCellDef="let task" role="gridcell">
+          <mat-chip
+            [class]="'status-chip status-' + getStatusClass(task.status)"
+            [attr.aria-label]="'Status: ' + task.status"
+          >
+            <mat-icon aria-hidden="true">{{ getStatusIcon(task.status) }}</mat-icon>
             {{ task.status }}
           </mat-chip>
         </td>
@@ -92,9 +104,12 @@
 
       <!-- Priority Column -->
       <ng-container matColumnDef="priority">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Priority</th>
-        <td mat-cell *matCellDef="let task">
-          <mat-chip [class]="'priority-chip priority-' + task.priority.toLowerCase()">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">Priority</th>
+        <td mat-cell *matCellDef="let task" role="gridcell">
+          <mat-chip
+            [class]="'priority-chip priority-' + task.priority.toLowerCase()"
+            [attr.aria-label]="'Priority: ' + task.priority"
+          >
             {{ task.priority }}
           </mat-chip>
         </td>
@@ -102,11 +117,12 @@
 
       <!-- Due Date Column -->
       <ng-container matColumnDef="dueDate">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Due Date</th>
-        <td mat-cell *matCellDef="let task">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">Due Date</th>
+        <td mat-cell *matCellDef="let task" role="gridcell">
           <div class="due-date" [class.overdue]="isOverdue(task)">
             @if (isOverdue(task)) {
-            <mat-icon class="overdue-icon">warning</mat-icon>
+            <mat-icon class="overdue-icon" aria-hidden="true">warning</mat-icon>
+            <span class="cdk-visually-hidden">Warning: Task is overdue.</span>
             }
             <span>{{ task.dueDate | date : 'MMM d, y' }}</span>
           </div>
@@ -115,12 +131,14 @@
 
       <!-- Actions Column -->
       <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>Actions</th>
-        <td mat-cell *matCellDef="let task">
+        <th mat-header-cell *matHeaderCellDef scope="col">Actions</th>
+        <td mat-cell *matCellDef="let task" role="gridcell">
           <button
             mat-icon-button
             [matMenuTriggerFor]="actionsMenu"
             [matMenuTriggerData]="{ task: task }"
+            [attr.aria-label]="'Actions for ' + task.title"
+            aria-haspopup="true"
           >
             <mat-icon>more_vert</mat-icon>
           </button>
@@ -133,13 +151,17 @@
         *matRowDef="let row; columns: displayedColumns()"
         class="table-row"
         (click)="onTaskView(row)"
+        (keydown.enter)="onTaskView(row)"
+        role="button"
+        tabindex="0"
+        [attr.aria-label]="'View details for ' + row.title"
       ></tr>
     </table>
 
     <!-- No Data State -->
     @if (!loading() && dataSource.data.length === 0) {
-    <div class="no-data">
-      <mat-icon>assignment</mat-icon>
+    <div class="no-data" role="region" aria-live="polite">
+      <mat-icon aria-hidden="true">assignment</mat-icon>
       <h3>No tasks found</h3>
       <p>No tasks match your current filters. Try adjusting your search criteria.</p>
       <button mat-raised-button color="primary" (click)="onClearFilters()">Clear Filters</button>
@@ -153,6 +175,7 @@
     [pageSize]="pageSize()"
     showFirstLastButtons
     (page)="onPageChange($event)"
+    aria-label="Task list pagination controls"
   >
   </mat-paginator>
 </mat-card>
@@ -161,20 +184,20 @@
 <mat-menu #actionsMenu="matMenu">
   <ng-template matMenuContent let-task="task">
     <button mat-menu-item (click)="onTaskView(task)">
-      <mat-icon>visibility</mat-icon>
+      <mat-icon aria-hidden="true">visibility</mat-icon>
       <span>View Details</span>
     </button>
     <button mat-menu-item (click)="onTaskEdit(task)">
-      <mat-icon>edit</mat-icon>
+      <mat-icon aria-hidden="true">edit</mat-icon>
       <span>Edit</span>
     </button>
     <button mat-menu-item (click)="onTaskDuplicate(task)">
-      <mat-icon>content_copy</mat-icon>
+      <mat-icon aria-hidden="true">content_copy</mat-icon>
       <span>Duplicate</span>
     </button>
     <mat-divider></mat-divider>
     <button mat-menu-item (click)="onTaskDelete(task)" class="delete-action">
-      <mat-icon>delete</mat-icon>
+      <mat-icon aria-hidden="true">delete</mat-icon>
       <span>Delete</span>
     </button>
   </ng-template>

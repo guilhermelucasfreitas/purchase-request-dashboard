@@ -1,6 +1,8 @@
-<div class="stats-grid">
-  <div class="stat-card">
-    <div class="stat-icon in-progress">
+<div class="stats-grid" role="group" aria-labelledby="stats-heading">
+  <h2 id="stats-heading" class="cdk-visually-hidden">Task Statistics</h2>
+
+  <div class="stat-card" [attr.aria-label]="inProgressCount() + ' tasks in progress'">
+    <div class="stat-icon in-progress" aria-hidden="true">
       <mat-icon>play_circle</mat-icon>
     </div>
     <div class="stat-content">
@@ -9,8 +11,8 @@
     </div>
   </div>
 
-  <div class="stat-card">
-    <div class="stat-icon pending">
+  <div class="stat-card" [attr.aria-label]="pendingCount() + ' tasks pending'">
+    <div class="stat-icon pending" aria-hidden="true">
       <mat-icon>schedule</mat-icon>
     </div>
     <div class="stat-content">
@@ -19,8 +21,8 @@
     </div>
   </div>
 
-  <div class="stat-card">
-    <div class="stat-icon done">
+  <div class="stat-card" [attr.aria-label]="doneCount() + ' tasks completed'">
+    <div class="stat-icon done" aria-hidden="true">
       <mat-icon>check_circle</mat-icon>
     </div>
     <div class="stat-content">
@@ -30,8 +32,8 @@
   </div>
 
   @if (overdueCount() > 0) {
-  <div class="stat-card overdue">
-    <div class="stat-icon overdue">
+  <div class="stat-card overdue" [attr.aria-label]="overdueCount() + ' tasks overdue'" role="alert">
+    <div class="stat-icon overdue" aria-hidden="true">
       <mat-icon>warning</mat-icon>
     </div>
     <div class="stat-content">
@@ -40,8 +42,8 @@
     </div>
   </div>
   } @else {
-  <div class="stat-card">
-    <div class="stat-icon total">
+  <div class="stat-card" [attr.aria-label]="totalCount() + ' total tasks'">
+    <div class="stat-icon total" aria-hidden="true">
       <mat-icon>assignment</mat-icon>
     </div>
     <div class="stat-content">

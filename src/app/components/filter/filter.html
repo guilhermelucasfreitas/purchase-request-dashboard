@@ -1,5 +1,6 @@
 <!-- Filters Section -->
-<mat-card class="filters-card">
+<mat-card class="filters-card" role="region" aria-labelledby="filters-heading">
+  <h2 id="filters-heading" class="cdk-visually-hidden">Task Filters</h2>
   <div class="filters-content">
     <div class="search-section">
       <mat-form-field appearance="outline" class="search-field">
@@ -8,15 +9,18 @@
           matInput
           [formControl]="searchControl"
           placeholder="Search by title, description, assignee, or tags"
+          aria-label="Search tasks by title, description, assignee, or tags"
+          aria-controls="tasks-list"
         />
-        <mat-icon matSuffix>search</mat-icon>
+        <mat-icon matSuffix aria-hidden="true">search</mat-icon>
       </mat-form-field>
     </div>
 
-    <div class="filter-section">
+    <div class="filter-section" role="group" aria-labelledby="filter-options-heading">
+      <h3 id="filter-options-heading" class="cdk-visually-hidden">Filter options</h3>
       <mat-form-field appearance="outline" class="filter-field">
         <mat-label>Status</mat-label>
-        <mat-select [formControl]="statusControl" multiple>
+        <mat-select [formControl]="statusControl" multiple aria-label="Filter by status">
           @for (status of statusOptions; track status.value) {
           <mat-option [value]="status.value">
             {{ status.label }}
@@ -27,7 +31,7 @@
 
       <mat-form-field appearance="outline" class="filter-field">
         <mat-label>Priority</mat-label>
-        <mat-select [formControl]="priorityControl" multiple>
+        <mat-select [formControl]="priorityControl" multiple aria-label="Filter by priority">
           @for (priority of priorityOptions; track priority.value) {
           <mat-option [value]="priority.value">
             {{ priority.label }}
@@ -38,7 +42,7 @@
 
       <mat-form-field appearance="outline" class="filter-field">
         <mat-label>Assignee</mat-label>
-        <mat-select [formControl]="assigneeControl" multiple>
+        <mat-select [formControl]="assigneeControl" multiple aria-label="Filter by assignee">
           <mat-option value="unassigned">Unassigned</mat-option>
           @for (user of users(); track user.id) {
           <mat-option [value]="user.id">
@@ -54,14 +58,21 @@
           [color]="showOverdueOnly() ? 'warn' : 'basic'"
           (click)="onToggleOverdue()"
           class="overdue-toggle"
+          [attr.aria-pressed]="showOverdueOnly()"
+          aria-label="Toggle overdue tasks filter"
         >
-          <mat-icon>{{ showOverdueOnly() ? 'warning' : 'schedule' }}</mat-icon>
+          <mat-icon aria-hidden="true">{{ showOverdueOnly() ? 'warning' : 'schedule' }}</mat-icon>
           {{ showOverdueOnly() ? 'Showing Overdue' : 'Show Overdue' }}
         </button>
       </div>
 
-      <button mat-stroked-button (click)="onClearFilters()" class="clear-filters-btn">
-        <mat-icon>clear</mat-icon>
+      <button
+        mat-stroked-button
+        (click)="onClearFilters()"
+        class="clear-filters-btn"
+        aria-label="Clear all filters"
+      >
+        <mat-icon aria-hidden="true">clear</mat-icon>
         Clear Filters
       </button>
     </div>

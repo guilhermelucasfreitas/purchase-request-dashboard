@@ -1,14 +1,20 @@
-<div class="tasks-container">
+<main class="tasks-container" role="main" aria-labelledby="main-heading">
   <!-- Header Section -->
-  <div class="tasks-header">
+  <header class="tasks-header" role="banner">
     <div class="header-content">
       <div class="title-section">
-        <h1>Task Management</h1>
+        <h1 id="main-heading">Task Management</h1>
         <p class="subtitle">Manage and track all tasks across teams and projects</p>
       </div>
       <div class="header-actions">
-        <button mat-raised-button color="primary" class="create-btn" (click)="openCreateTask()">
-          <mat-icon>add</mat-icon>
+        <button
+          mat-raised-button
+          color="primary"
+          class="create-btn"
+          (click)="openCreateTask()"
+          aria-label="Create a new task"
+        >
+          <mat-icon aria-hidden="true">add</mat-icon>
           New Task
         </button>
       </div>
@@ -16,16 +22,20 @@
 
     <!-- Stats Cards Component -->
     <app-stats-cards
+      role="region"
+      aria-label="Task statistics summary"
       [pendingCount]="pendingCount()"
       [inProgressCount]="inProgressCount()"
       [doneCount]="doneCount()"
       [totalCount]="totalCount()"
       [overdueCount]="overdueCount()"
     ></app-stats-cards>
-  </div>
+  </header>
 
   <!-- Filter Component -->
   <app-filter
+    role="search"
+    aria-label="Task filters"
     [users]="users()"
     [showOverdueOnly]="showOverdueOnly()"
     (filtersChanged)="onFiltersChanged($event)"
@@ -35,6 +45,8 @@
 
   <!-- Table Component -->
   <app-table
+    role="region"
+    aria-label="Tasks list"
     [tasks]="tasks()"
     [loading]="loading()"
     [displayedColumns]="displayedColumns()"
@@ -49,4 +61,4 @@
     (clearFilters)="onFiltersCleared()"
     (pageChange)="onPageChange($event)"
   ></app-table>
-</div>
+</main>

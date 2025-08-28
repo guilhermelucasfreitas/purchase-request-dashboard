@@ -1,56 +1,61 @@
-   <div class="layout-container">
-      <mat-sidenav-container class="sidenav-container">
-        <mat-sidenav
-          #drawer
-          class="sidenav"
-          [class.collapsed]="isCollapsed()"
-          fixedInViewport
-          [attr.role]="isHandset() ? 'dialog' : 'navigation'"
-          [mode]="isHandset() ? 'over' : 'side'"
-          [opened]="!isHandset()"
+<div class="layout-container">
+  <mat-sidenav-container class="sidenav-container" hasBackdrop="false">
+    <mat-sidenav
+      #drawer
+      class="sidenav"
+      [class.collapsed]="isCollapsed()"
+      fixedInViewport
+      [attr.role]="isHandset() ? 'dialog' : 'navigation'"
+      [mode]="isHandset() ? 'over' : 'side'"
+      [opened]="!isHandset()"
+      aria-label="Main navigation"
+    >
+      <app-sidebar
+        [isCollapsed]="isCollapsed()"
+        [isDarkMode]="isDarkMode()"
+        [isHandset]="isHandset()"
+        (toggleCollapse)="toggleCollapse()"
+        (toggleTheme)="toggleTheme()"
+        (navItemClick)="closeMobileMenu(drawer)"
+      ></app-sidebar>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="main-content">
+      <mat-toolbar
+        class="toolbar"
+        [class.expanded]="!isCollapsed() && !isHandset()"
+        [class.collapsed]="isCollapsed() && !isHandset()"
+        role="banner"
+      >
+        @if (isHandset()) {
+        <button
+          type="button"
+          aria-label="Toggle sidenav"
+          mat-icon-button
+          (click)="drawer.toggle()"
+          aria-controls="drawer"
+          [attr.aria-expanded]="drawer.opened"
         >
-          <app-sidebar
-            [isCollapsed]="isCollapsed()"
-            [isDarkMode]="isDarkMode()"
-            [isHandset]="isHandset()"
-            (toggleCollapse)="toggleCollapse()"
-            (toggleTheme)="toggleTheme()"
-            (navItemClick)="closeMobileMenu(drawer)"
-          ></app-sidebar>
-        </mat-sidenav>
+          <mat-icon aria-hidden="true">menu</mat-icon>
+        </button>
+        }
 
-        <mat-sidenav-content class="main-content">
-          <mat-toolbar
-            class="toolbar"
-            [class.expanded]="!isCollapsed() && !isHandset()"
-            [class.collapsed]="isCollapsed() && !isHandset()"
-          >
-            <button
-              type="button"
-              aria-label="Toggle sidenav"
-              mat-icon-button
-              (click)="drawer.toggle()"
-              *ngIf="isHandset()"
-            >
-              <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        <div class="toolbar-content">
+          <h1 class="page-title">{{ getPageTitle() }}</h1>
+          <div class="toolbar-actions">
+            <button mat-icon-button aria-label="View notifications">
+              <mat-icon>notifications</mat-icon>
             </button>
-
-            <div class="toolbar-content">
-              <h1 class="page-title">{{ getPageTitle() }}</h1>
-              <div class="toolbar-actions">
-                <button mat-icon-button [matTooltip]="'Notifications'">
-                  <mat-icon>notifications</mat-icon>
-                </button>
-                <button mat-icon-button [matTooltip]="'User profile'">
-                  <mat-icon>account_circle</mat-icon>
-                </button>
-              </div>
-            </div>
-          </mat-toolbar>
-
-          <div class="page-content">
-            <router-outlet></router-outlet>
+            <button mat-icon-button aria-label="User profile">
+              <mat-icon>account_circle</mat-icon>
+            </button>
           </div>
-        </mat-sidenav-content>
-      </mat-sidenav-container>
-    </div>
+        </div>
+      </mat-toolbar>
+
+      <main class="page-content" role="main">
+        <router-outlet></router-outlet>
+      </main>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

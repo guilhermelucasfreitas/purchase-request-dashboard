@@ -1,7 +1,7 @@
 <div class="form-container">
   <!-- Loading State -->
   @if (loading()) {
-  <div class="loading-container">
+  <div class="loading-container" role="status" aria-live="polite">
     <mat-spinner diameter="40"></mat-spinner>
     <p>{{ isEditMode() ? 'Loading task...' : 'Preparing form...' }}</p>
   </div>
@@ -11,29 +11,31 @@
   @if (!loading()) {
   <!-- Header -->
   <div class="form-header">
-    <button mat-icon-button (click)="goBack()">
+    <button mat-icon-button (click)="goBack()" aria-label="Go back to previous page">
       <mat-icon>arrow_back</mat-icon>
     </button>
     <div class="title-section">
-      <h1>{{ isEditMode() ? 'Edit Task' : 'Create New Task' }}</h1>
+      <h1 id="form-title">{{ isEditMode() ? 'Edit Task' : 'Create New Task' }}</h1>
       <p class="subtitle">
         {{ isEditMode() ? 'Update task details' : 'Add a new task to your project' }}
       </p>
     </div>
     @if (isEditMode() && currentTask()) {
     <div class="header-actions">
-      <span class="task-id">{{ currentTask()?.uid }}</span>
+      <span class="task-id" [attr.aria-label]="'Task ID ' + currentTask()?.uid">{{
+        currentTask()?.uid
+      }}</span>
     </div>
     }
   </div>
 
-  <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" role="form" aria-labelledby="form-title">
     <div class="form-grid">
       <!-- Left Column -->
       <div class="form-column">
-        <mat-card class="form-section">
+        <mat-card class="form-section" role="region" aria-labelledby="basic-info-heading">
           <mat-card-header>
-            <mat-card-title>Basic Information</mat-card-title>
+            <mat-card-title id="basic-info-heading">Basic Information</mat-card-title>
           </mat-card-header>
           <mat-card-content>
             <!-- Title -->
@@ -41,7 +43,9 @@
               <mat-label>Title *</mat-label>
               <input matInput formControlName="title" placeholder="Enter task title" required />
               @if (hasFieldError('title')) {
-              <mat-error class="field-error">{{ getFieldErrorMessage('title') }}</mat-error>
+              <mat-error class="field-error" role="alert">{{
+                getFieldErrorMessage('title')
+              }}</mat-error>
               }
             </mat-form-field>
 
@@ -56,7 +60,9 @@
                 required
               ></textarea>
               @if (hasFieldError('description')) {
-              <mat-error class="field-error">{{ getFieldErrorMessage('description') }}</mat-error>
+              <mat-error class="field-error" role="alert">{{
+                getFieldErrorMessage('description')
+              }}</mat-error>
               }
             </mat-form-field>
 
@@ -68,7 +74,7 @@
                 @for (status of statusOptions; track status.value) {
                 <mat-option [value]="status.value">
                   <div class="status-option">
-                    <mat-icon>{{ getStatusIcon(status.value) }}</mat-icon>
+                    <mat-icon aria-hidden="true">{{ getStatusIcon(status.value) }}</mat-icon>
                     {{ status.label }}
                   </div>
                 </mat-option>
@@ -79,9 +85,9 @@
           </mat-card-content>
         </mat-card>
 
-        <mat-card class="form-section">
+        <mat-card class="form-section" role="region" aria-labelledby="assignment-heading">
           <mat-card-header>
-            <mat-card-title>Assignment & Priority</mat-card-title>
+            <mat-card-title id="assignment-heading">Assignment & Priority</mat-card-title>
           </mat-card-header>
           <mat-card-content>
             <!-- Priority -->
@@ -91,14 +97,21 @@
                 @for (priority of priorityOptions; track priority.value) {
                 <mat-option [value]="priority.value">
                   <div class="priority-option">
-                    <span [class]="'priority-indicator ' + priority.value.toLowerCase()"> ● </span>
+                    <span
+                      [class]="'priority-indicator ' + priority.value.toLowerCase()"
+                      aria-hidden="true"
+                    >
+                      ●
+                    </span>
                     {{ priority.label }}
                   </div>
                 </mat-option>
                 }
               </mat-select>
               @if (hasFieldError('priority')) {
-              <mat-error class="field-error">{{ getFieldErrorMessage('priority') }}</mat-error>
+              <mat-error class="field-error" role="alert">{{
+                getFieldErrorMessage('priority')
+              }}</mat-error>
               }
             </mat-form-field>
 
@@ -116,7 +129,7 @@
                         [alt]="user.name"
                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
                       />
-                      <span class="initials">{{ getInitials(user.name) }}</span>
+                      <span class="initials" aria-hidden="true">{{ getInitials(user.name) }}</span>
                     </div>
                     <div class="user-info">
                       <span class="user-name" [class.inactive]="user.active === false">
@@ -135,10 +148,16 @@
               <mat-label>Due Date *</mat-label>
               <input matInput [matDatepicker]="picker" formControlName="dueDate" required />
               <mat-hint>Select the deadline for this task</mat-hint>
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker"
+                aria-label="Open datepicker"
+              ></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
               @if (hasFieldError('dueDate')) {
-              <mat-error class="field-error">{{ getFieldErrorMessage('dueDate') }}</mat-error>
+              <mat-error class="field-error" role="alert">{{
+                getFieldErrorMessage('dueDate')
+              }}</mat-error>
               }
             </mat-form-field>
           </mat-card-content>
@@ -147,9 +166,9 @@
 
       <!-- Right Column -->
       <div class="form-column">
-        <mat-card class="form-section">
+        <mat-card class="form-section" role="region" aria-labelledby="tags-heading">
           <mat-card-header>
-            <mat-card-title>Tags</mat-card-title>
+            <mat-card-title id="tags-heading">Tags</mat-card-title>
             <mat-card-subtitle>Organize your task with relevant tags</mat-card-subtitle>
           </mat-card-header>
           <mat-card-content>
@@ -162,8 +181,14 @@
                 [matAutocomplete]="auto"
                 placeholder="Type to add tags"
                 (keydown.enter)="addTag($event)"
+                aria-controls="tag-autocomplete-options"
+                aria-haspopup="listbox"
               />
-              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="addTagFromOption($event)">
+              <mat-autocomplete
+                #auto="matAutocomplete"
+                (optionSelected)="addTagFromOption($event)"
+                id="tag-autocomplete-options"
+              >
                 @for (tag of filteredTags | async; track tag) {
                 <mat-option [value]="tag">
                   {{ tag }}
@@ -175,11 +200,13 @@
             <!-- Current Tags -->
             @if (currentTags().length > 0) {
             <div class="tags-container">
-              <mat-chip-set aria-label="Task tags">
+              <mat-chip-set aria-label="Current task tags">
                 @for (tag of currentTags(); track tag) {
                 <mat-chip (removed)="removeTag(tag)" [removable]="true">
                   {{ tag }}
-                  <mat-icon matChipRemove>cancel</mat-icon>
+                  <button matChipRemove [attr.aria-label]="'Remove ' + tag">
+                    <mat-icon>cancel</mat-icon>
+                  </button>
                 </mat-chip>
                 }
               </mat-chip-set>
@@ -190,9 +217,9 @@
 
         <!-- Task Info (Edit Mode Only) -->
         @if (isEditMode() && currentTask()) {
-        <mat-card class="form-section">
+        <mat-card class="form-section" role="region" aria-labelledby="task-info-heading">
           <mat-card-header>
-            <mat-card-title>Task Information</mat-card-title>
+            <mat-card-title id="task-info-heading">Task Information</mat-card-title>
           </mat-card-header>
           <mat-card-content>
             <div class="info-grid">
@@ -222,8 +249,14 @@
     <!-- Form Actions -->
     <div class="form-actions">
       @if (isEditMode() && currentTask()) {
-      <button type="button" mat-stroked-button (click)="deleteTask()" class="delete-btn">
-        <mat-icon>delete</mat-icon>
+      <button
+        type="button"
+        mat-stroked-button
+        (click)="deleteTask()"
+        class="delete-btn"
+        [attr.aria-label]="'Delete task ' + currentTask()?.title"
+      >
+        <mat-icon aria-hidden="true">delete</mat-icon>
         Delete
       </button>
       }
@@ -238,11 +271,14 @@
           color="primary"
           [disabled]="taskForm.invalid || submitting()"
           class="submit-btn"
+          [attr.aria-label]="
+            submitting() ? 'Saving, please wait' : isEditMode() ? 'Update task' : 'Create new task'
+          "
         >
           @if (submitting()) {
-          <mat-icon>hourglass_empty</mat-icon>
+          <mat-icon aria-hidden="true">hourglass_empty</mat-icon>
           } @else {
-          <mat-icon>{{ isEditMode() ? 'update' : 'add' }}</mat-icon>
+          <mat-icon aria-hidden="true">{{ isEditMode() ? 'update' : 'add' }}</mat-icon>
           }
           {{ submitting() ? 'Saving...' : isEditMode() ? 'Update Task' : 'Create Task' }}
         </button>

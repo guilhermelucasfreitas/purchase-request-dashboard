@@ -1,17 +1,34 @@
-<div class="sidenav-content" [class.collapsed]="isCollapsed()">
+<div
+  class="sidenav-content"
+  [class.collapsed]="isCollapsed()"
+  role="navigation"
+  aria-label="Main navigation"
+>
   <div class="sidenav-header">
     <div class="logo-container">
-      <mat-icon class="logo-icon">shopping_cart</mat-icon>
-      <h2 class="logo-text" [class.hidden]="isCollapsed()">Task Pro</h2>
+      <mat-icon class="logo-icon" aria-hidden="true">shopping_cart</mat-icon>
+      <h2 class="logo-text" [class.hidden]="isCollapsed()" id="sidenav-heading">Task Pro</h2>
     </div>
     @if (!isHandset()) {
-    <button mat-icon-button class="collapse-btn" (click)="onToggleCollapse()">
-      <mat-icon>{{ isCollapsed() ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+    <button
+      mat-icon-button
+      class="collapse-btn"
+      (click)="onToggleCollapse()"
+      [attr.aria-expanded]="!isCollapsed()"
+      aria-controls="nav-list-container"
+      [attr.aria-label]="isCollapsed() ? 'Expand navigation' : 'Collapse navigation'"
+    >
+      <mat-icon aria-hidden="true">{{ isCollapsed() ? 'chevron_right' : 'chevron_left' }}</mat-icon>
     </button>
     }
   </div>
 
-  <mat-nav-list class="nav-list">
+  <mat-nav-list
+    class="nav-list"
+    id="nav-list-container"
+    role="list"
+    aria-labelledby="sidenav-heading"
+  >
     <a
       mat-list-item
       routerLink="/tasks"
@@ -20,8 +37,9 @@
       [matTooltip]="isCollapsed() ? 'Tasks' : ''"
       matTooltipPosition="right"
       (click)="onNavItemClick()"
+      aria-label="Go to Task List"
     >
-      <mat-icon matListItemIcon>assignment</mat-icon>
+      <mat-icon matListItemIcon aria-hidden="true">assignment</mat-icon>
       <span matListItemTitle [class.hidden]="isCollapsed()">Task List</span>
     </a>
 
@@ -33,8 +51,9 @@
       [matTooltip]="isCollapsed() ? 'Users' : ''"
       matTooltipPosition="right"
       (click)="onNavItemClick()"
+      aria-label="Go to Users"
     >
-      <mat-icon matListItemIcon>people</mat-icon>
+      <mat-icon matListItemIcon aria-hidden="true">people</mat-icon>
       <span matListItemTitle [class.hidden]="isCollapsed()">Users</span>
     </a>
 
@@ -46,8 +65,9 @@
       [matTooltip]="isCollapsed() ? 'Settings' : ''"
       matTooltipPosition="right"
       (click)="onNavItemClick()"
+      aria-label="Go to Settings"
     >
-      <mat-icon matListItemIcon>settings</mat-icon>
+      <mat-icon matListItemIcon aria-hidden="true">settings</mat-icon>
       <span matListItemTitle [class.hidden]="isCollapsed()">Settings</span>
     </a>
   </mat-nav-list>
@@ -59,10 +79,12 @@
       (click)="onToggleTheme()"
       [matTooltip]="isDarkMode() ? 'Switch to light mode' : 'Switch to dark mode'"
       matTooltipPosition="right"
+      [attr.aria-pressed]="isDarkMode()"
+      aria-label="Toggle color theme"
     >
-      <mat-icon>{{ isDarkMode() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+      <mat-icon aria-hidden="true">{{ isDarkMode() ? 'light_mode' : 'dark_mode' }}</mat-icon>
     </button>
-    <span class="theme-label" [class.hidden]="isCollapsed()">
+    <span class="theme-label" [class.hidden]="isCollapsed()" aria-hidden="true">
       {{ isDarkMode() ? 'Light Mode' : 'Dark Mode' }}
     </span>
   </div>
