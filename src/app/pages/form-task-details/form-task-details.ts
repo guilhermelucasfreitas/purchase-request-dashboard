@@ -65,7 +65,7 @@ import { PRIORITY_OPTIONS, STATUS_OPTIONS } from '../../models/task.constants';
   ],
   templateUrl: './form-task-details.html',
   styleUrl: './form-task-details.scss',
-   providers: [provideNativeDateAdapter()],
+  providers: [provideNativeDateAdapter()],
   //Use ViewEncapsulation.None for proper dropdown styling
   encapsulation: ViewEncapsulation.None,
 })
@@ -93,6 +93,10 @@ export class FormTaskDetails implements OnInit, OnDestroy {
   // Computed
   isEditMode = computed(() => !!this.route.snapshot.params['id']);
   taskId = computed(() => this.route.snapshot.params['id']);
+  selectedStatusLabel = computed(() => {
+    const statusValue = this.taskForm.get('status')?.value;
+    return this.statusOptions.find((s) => s.value === statusValue)?.label || '';
+  });
 
   // Options
   statusOptions = STATUS_OPTIONS;

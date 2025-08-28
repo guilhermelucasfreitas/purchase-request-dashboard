@@ -296,26 +296,35 @@
 // Form actions
 .form-actions {
   display: flex;
-  justify-content: space-between;
+  // FIX: Align all items to the end (right) by default
+  justify-content: flex-end;
   align-items: center;
+  gap: var(--spacing-3);
   border-top: 1px solid var(--border-primary);
   padding-top: var(--spacing-6);
 
   .delete-btn {
+    // FIX: Push the delete button to the start (left)
+    margin-right: auto;
     background-color: var(--color-error-500) !important;
-    color: #ffffff !important; 
+    color: #ffffff !important;
     border-color: var(--color-error-500) !important;
     min-width: 120px;
 
     mat-icon {
       margin-right: var(--spacing-2);
-      color: #ffffff !important; 
+      color: #ffffff !important;
     }
   }
 
   .action-buttons {
     display: flex;
     gap: var(--spacing-3);
+
+    // REMOVED: No longer need the :only-child fix
+    // &:only-child {
+    //   margin-left: auto;
+    // }
 
     .submit-btn {
       min-width: 160px;
@@ -383,6 +392,7 @@
 
     .delete-btn {
       order: 3; // Delete button last
+      margin-right: 0; // Reset margin for mobile
     }
 
     .action-buttons {

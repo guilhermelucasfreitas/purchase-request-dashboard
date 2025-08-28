@@ -71,6 +71,16 @@
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Status</mat-label>
               <mat-select formControlName="status" panelClass="custom-select-panel">
+                <!-- FIX: Use the new computed signal to display the selected value -->
+                <mat-select-trigger>
+                  <div class="status-option">
+                    <mat-icon aria-hidden="true">{{
+                      getStatusIcon(taskForm.get('status')!.value)
+                    }}</mat-icon>
+                    <span>{{ selectedStatusLabel() }}</span>
+                  </div>
+                </mat-select-trigger>
+
                 @for (status of statusOptions; track status.value) {
                 <mat-option [value]="status.value">
                   <div class="status-option">

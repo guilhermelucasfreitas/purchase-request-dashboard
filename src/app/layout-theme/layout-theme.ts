@@ -74,7 +74,7 @@ export class LayoutTheme {
       case '/settings':
         return 'Settings';
       default:
-        return 'Dashboard';
+        return 'Form Task Details';
     }
   }
 
