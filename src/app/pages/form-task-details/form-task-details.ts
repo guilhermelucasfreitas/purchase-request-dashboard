@@ -41,6 +41,7 @@ import {
   CreateTaskData,
   UpdateTaskData,
 } from '../../models/task.model';
+import { PRIORITY_OPTIONS, STATUS_OPTIONS } from '../../models/task.constants';
 
 @Component({
   selector: 'app-form-task-details',
@@ -93,20 +94,8 @@ export class FormTaskDetails implements OnInit, OnDestroy {
   taskId = computed(() => this.route.snapshot.params['id']);
 
   // Options
-  statusOptions = [
-    { value: TaskStatus.BACKLOG, label: 'Backlog' },
-    { value: TaskStatus.PENDING, label: 'Pending' },
-    { value: TaskStatus.IN_PROGRESS, label: 'In Progress' },
-    { value: TaskStatus.IN_REVIEW, label: 'In Review' },
-    { value: TaskStatus.DONE, label: 'Done' },
-  ];
-
-  priorityOptions = [
-    { value: Priority.LOW, label: 'Low' },
-    { value: Priority.MEDIUM, label: 'Medium' },
-    { value: Priority.HIGH, label: 'High' },
-    { value: Priority.CRITICAL, label: 'Critical' },
-  ];
+  statusOptions = STATUS_OPTIONS;
+  priorityOptions = PRIORITY_OPTIONS;
 
   constructor() {
     this.taskForm = this.fb.group({

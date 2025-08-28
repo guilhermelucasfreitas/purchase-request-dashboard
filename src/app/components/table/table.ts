@@ -12,6 +12,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Task, TaskStatus } from '../../models/task.model';
+import { getStatusIcon } from '../../models/task.constants';
 
 @Component({
   selector: 'app-table',
@@ -123,14 +124,7 @@ export class Table implements OnInit, AfterViewInit {
   }
 
   getStatusIcon(status: TaskStatus): string {
-    const icons = {
-      [TaskStatus.BACKLOG]: 'inventory_2',
-      [TaskStatus.PENDING]: 'schedule',
-      [TaskStatus.IN_PROGRESS]: 'play_circle',
-      [TaskStatus.IN_REVIEW]: 'rate_review',
-      [TaskStatus.DONE]: 'check_circle',
-    };
-    return icons[status] || 'help';
+    return getStatusIcon(status);
   }
 
   getStatusClass(status: TaskStatus): string {

@@ -10,6 +10,7 @@ import { MatCardModule } from '@angular/material/card';
 import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
 import { combineLatest, Subject, takeUntil } from 'rxjs';
 import { TaskStatus, Priority, TaskFilters, User } from '../../models/task.model';
+import { PRIORITY_OPTIONS, STATUS_OPTIONS } from '../../models/task.constants';
 
 @Component({
   selector: 'app-filter',
@@ -46,20 +47,8 @@ export class Filter implements OnInit, OnDestroy {
   assigneeControl = new FormControl<string[]>([]);
 
   // Filter options
-  statusOptions = [
-    { value: TaskStatus.BACKLOG, label: 'Backlog' },
-    { value: TaskStatus.PENDING, label: 'Pending' },
-    { value: TaskStatus.IN_PROGRESS, label: 'In Progress' },
-    { value: TaskStatus.IN_REVIEW, label: 'In Review' },
-    { value: TaskStatus.DONE, label: 'Done' },
-  ];
-
-  priorityOptions = [
-    { value: Priority.LOW, label: 'Low' },
-    { value: Priority.MEDIUM, label: 'Medium' },
-    { value: Priority.HIGH, label: 'High' },
-    { value: Priority.CRITICAL, label: 'Critical' },
-  ];
+  statusOptions = STATUS_OPTIONS;
+  priorityOptions = PRIORITY_OPTIONS;
 
   ngOnInit() {
     this.setupFilters();

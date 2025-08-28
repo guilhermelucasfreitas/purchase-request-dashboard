@@ -19,6 +19,7 @@ import { Filter } from './filter';
 import { Priority, TaskStatus } from '../../models/task.model';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { mockData } from '../../services/mock-data';
+import { PRIORITY_OPTIONS, STATUS_OPTIONS } from '../../models/task.constants';
 
 describe('Filter', () => {
   let component: Filter;
@@ -403,22 +404,11 @@ describe('Filter', () => {
 
   describe('Filter Options', () => {
     it('should have correct status options', () => {
-      expect(component.statusOptions).toEqual([
-        { value: TaskStatus.BACKLOG, label: 'Backlog' },
-        { value: TaskStatus.PENDING, label: 'Pending' },
-        { value: TaskStatus.IN_PROGRESS, label: 'In Progress' },
-        { value: TaskStatus.IN_REVIEW, label: 'In Review' },
-        { value: TaskStatus.DONE, label: 'Done' },
-      ]);
+      expect(component.statusOptions).toEqual(STATUS_OPTIONS);
     });
 
     it('should have correct priority options', () => {
-      expect(component.priorityOptions).toEqual([
-        { value: Priority.LOW, label: 'Low' },
-        { value: Priority.MEDIUM, label: 'Medium' },
-        { value: Priority.HIGH, label: 'High' },
-        { value: Priority.CRITICAL, label: 'Critical' },
-      ]);
+      expect(component.priorityOptions).toEqual(PRIORITY_OPTIONS);
     });
   });
 });
