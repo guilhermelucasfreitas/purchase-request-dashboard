@@ -23,7 +23,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule, provideNativeDateAdapter } from '@angular/material/core';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -65,6 +65,7 @@ import { PRIORITY_OPTIONS, STATUS_OPTIONS } from '../../models/task.constants';
   ],
   templateUrl: './form-task-details.html',
   styleUrl: './form-task-details.scss',
+   providers: [provideNativeDateAdapter()],
   //Use ViewEncapsulation.None for proper dropdown styling
   encapsulation: ViewEncapsulation.None,
 })

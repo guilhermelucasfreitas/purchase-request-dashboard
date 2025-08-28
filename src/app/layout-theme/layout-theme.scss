@@ -27,7 +27,10 @@
 
 .main-content {
   background-color: var(--background-primary);
-  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: margin-left 0.3s ease;
 }
 
 .toolbar {
@@ -36,86 +39,54 @@
   color: var(--text-primary);
   height: 64px;
   padding: 0 var(--spacing-4);
-
-  &.expanded {
-    margin-left: 280px;
-
-    @media (max-width: 768px) {
-      margin-left: 0;
-    }
-  }
-
-  &.collapsed {
-    margin-left: 64px;
-
-    @media (max-width: 768px) {
-      margin-left: 0;
-    }
-  }
+  flex-shrink: 0;
 
   .toolbar-content {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
+    height: 100%;
 
     .page-title {
       margin: 0;
       font-size: var(--font-size-xl);
       font-weight: var(--font-weight-semibold);
       color: var(--text-primary);
-    }
-
-    .toolbar-actions {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-2);
-
-      button {
-        color: var(--text-secondary);
-
-        &:hover {
-          background-color: var(--background-tertiary);
-          color: var(--text-primary);
-        }
-      }
+      flex: 1;
     }
   }
 }
 
 .page-content {
+  flex: 1;
   padding: var(--spacing-6);
-  min-height: calc(100vh - 64px);
+  overflow-y: auto;
+}
 
-  @media (max-width: 768px) {
-    padding: var(--spacing-4);
+
+// This ensures the main content is pushed correctly only on larger screens
+@media (min-width: 769px) {
+  .main-content {
+    // When the sidenav is open, push the content by its full width
+    margin-left: 280px;
   }
 
-  @media (max-width: 375px) {
-    padding: var(--spacing-3);
+  // When the sidenav has the .collapsed class, adjust the margin
+  .sidenav.collapsed + .main-content {
+    margin-left: 64px;
   }
 }
 
-// Responsive adjustments
+
+//Existing Responsive Adjustments 
 @media (max-width: 768px) {
-  .sidenav {
-    width: 280px; // Full width on mobile when open
-  }
-
-  .toolbar.expanded {
-    margin-left: 0;
-  }
-
   .page-content {
     padding: var(--spacing-4);
   }
 }
 
 @media (max-width: 375px) {
-  .sidenav {
-    width: 100vw; // Full viewport width on small mobile
-  }
-
   .page-content {
     padding: var(--spacing-3);
   }
@@ -124,19 +95,5 @@
     .page-title {
       font-size: var(--font-size-lg);
     }
-  }
-}
-
-// High contrast mode support
-@media (prefers-contrast: high) {
-  .sidenav {
-    border-right: 2px solid var(--border-secondary);
-  }
-}
-
-// Reduced motion support
-@media (prefers-reduced-motion: reduce) {
-  .sidenav {
-    transition: none;
   }
 }

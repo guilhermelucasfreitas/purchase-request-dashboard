@@ -144,7 +144,7 @@
             </mat-form-field>
 
             <!-- Due Date -->
-            <mat-form-field appearance="outline" class="full-width">
+            <mat-form-field appearance="outline">
               <mat-label>Due Date *</mat-label>
               <input matInput [matDatepicker]="picker" formControlName="dueDate" required />
               <mat-hint>Select the deadline for this task</mat-hint>
@@ -185,6 +185,7 @@
                 aria-haspopup="listbox"
               />
               <mat-autocomplete
+                panelClass="custom-autocomplete-panel"
                 #auto="matAutocomplete"
                 (optionSelected)="addTagFromOption($event)"
                 id="tag-autocomplete-options"
@@ -251,7 +252,8 @@
       @if (isEditMode() && currentTask()) {
       <button
         type="button"
-        mat-stroked-button
+        mat-flat-button
+        color="warn"
         (click)="deleteTask()"
         class="delete-btn"
         [attr.aria-label]="'Delete task ' + currentTask()?.title"

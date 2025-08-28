@@ -1,24 +1,10 @@
 .filters-card {
-  margin-bottom: var(--spacing-6);
-  border: 1px solid var(--border-primary);
-
   .filters-content {
-    padding: var(--spacing-6);
-
-    .search-section {
-      margin-bottom: var(--spacing-4);
-
-      .search-field {
-        width: 100%;
-        max-width: 400px;
-      }
-    }
-
     .filter-section {
       display: flex;
       flex-wrap: wrap;
       gap: var(--spacing-4);
-      align-items: center;
+      align-items: center; // Mantém como está
 
       .filter-field {
         min-width: 160px;
@@ -29,9 +15,10 @@
       .filter-toggles {
         display: flex;
         gap: var(--spacing-2);
+        margin-bottom: 1.2rem; // ← ADICIONE APENAS ESTA LINHA
 
         .overdue-toggle {
-          // normal (Show Overdue)
+          // Mantém todos os estilos existentes sem alteração
           &:not([color='warn']) {
             background-color: var(--color-primary-500);
             color: white;
@@ -43,7 +30,6 @@
             }
           }
 
-          // active (Showing Overdue)
           &[color='warn'] {
             background-color: var(--color-error-50);
             color: var(--color-error-700);
@@ -67,6 +53,7 @@
       }
 
       .clear-filters-btn {
+        margin-bottom: 1.2rem; // ← ADICIONE APENAS ESTA LINHA
         background-color: var(--color-primary-500);
         color: white;
         border-color: var(--color-primary-500);
@@ -82,31 +69,7 @@
       }
     }
   }
-
-  //customization only for white background in inputs and selects
-  ::ng-deep .mat-mdc-form-field {
-    //Input and Select - solid white background 
-    .mdc-text-field--outlined {
-      background-color: #ffffff !important;
-
-      [data-theme='dark'] & {
-        background-color: var(--surface-primary) !important;
-      }
-    }
-
-    //ensure selects also have a white background
-    &.mat-mdc-form-field-type-mat-select {
-      .mdc-text-field--outlined {
-        background-color: #ffffff !important;
-
-        [data-theme='dark'] & {
-          background-color: var(--surface-primary) !important;
-        }
-      }
-    }
-  }
 }
-
 // Panel do select dropdown
 ::ng-deep .mat-mdc-select-panel {
   background-color: var(--surface-primary) !important;

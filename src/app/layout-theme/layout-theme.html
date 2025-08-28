@@ -1,9 +1,10 @@
+<!-- layout-theme.html -->
 <div class="layout-container">
-  <mat-sidenav-container class="sidenav-container" hasBackdrop="false">
+  <mat-sidenav-container class="sidenav-container" autosize="true" [hasBackdrop]="isHandset()">
     <mat-sidenav
       #drawer
       class="sidenav"
-      [class.collapsed]="isCollapsed()"
+      [class.collapsed]="isCollapsed() && !isHandset()"
       fixedInViewport
       [attr.role]="isHandset() ? 'dialog' : 'navigation'"
       [mode]="isHandset() ? 'over' : 'side'"
@@ -17,16 +18,11 @@
         (toggleCollapse)="toggleCollapse()"
         (toggleTheme)="toggleTheme()"
         (navItemClick)="closeMobileMenu(drawer)"
-      ></app-sidebar>
+      />
     </mat-sidenav>
 
     <mat-sidenav-content class="main-content">
-      <mat-toolbar
-        class="toolbar"
-        [class.expanded]="!isCollapsed() && !isHandset()"
-        [class.collapsed]="isCollapsed() && !isHandset()"
-        role="banner"
-      >
+      <mat-toolbar class="toolbar" role="banner">
         @if (isHandset()) {
         <button
           type="button"
@@ -42,14 +38,6 @@
 
         <div class="toolbar-content">
           <h1 class="page-title">{{ getPageTitle() }}</h1>
-          <div class="toolbar-actions">
-            <button mat-icon-button aria-label="View notifications">
-              <mat-icon>notifications</mat-icon>
-            </button>
-            <button mat-icon-button aria-label="User profile">
-              <mat-icon>account_circle</mat-icon>
-            </button>
-          </div>
         </div>
       </mat-toolbar>
 

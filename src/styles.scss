@@ -301,20 +301,15 @@ body {
   outline-offset: 2px;
 }
 
-// Material Design styling
-// Versão mais específica - só aplica quando não há botões Material Design
 .mat-mdc-card:not(:has([matButton])) {
   background-color: var(--surface-primary) !important;
   border: 1px solid var(--border-primary);
 }
 
-// OU simplesmente remova o !important
 .mat-mdc-card {
   background-color: var(--surface-primary);
   border: 1px solid var(--border-primary);
 }
-
-// OU remova a regra completamente se não for essencial
 
 .mat-mdc-button {
   font-family: 'Inter', sans-serif !important;
@@ -353,6 +348,10 @@ body {
   }
 }
 
+html {
+  @include mat.theme(());
+}
+
 .mat-mdc-icon-button {
   color: var(--text-secondary) !important;
 
@@ -368,10 +367,6 @@ body {
   border-bottom: 1px solid var(--border-primary) !important;
 }
 
-html {
-  @include mat.theme(());
-}
-
 .mdc-text-field--outlined {
   --mdc-outlined-text-field-container-shape: 28px !important;
 }
@@ -380,4 +375,219 @@ html {
 .mat-mdc-form-field-appearance-outline .mdc-notched-outline .mdc-notched-outline__notch,
 .mat-mdc-form-field-appearance-outline .mdc-notched-outline .mdc-notched-outline__trailing {
   border-radius: 28px !important;
+}
+
+.mat-datepicker-content {
+  background-color: #ffffff !important;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2) !important;
+  border-radius: 12px !important;
+  overflow: visible !important;
+}
+
+.mat-datepicker-content-container {
+  background-color: #ffffff !important;
+}
+
+.mat-calendar {
+  background-color: #ffffff !important;
+}
+
+.mat-calendar-header {
+  background-color: #ffffff !important;
+}
+
+.mat-calendar-content {
+  background-color: #ffffff !important;
+  padding: 8px !important;
+}
+
+.mat-calendar-table {
+  background-color: #ffffff !important;
+}
+
+.mat-calendar-table-header {
+  background-color: #ffffff !important;
+}
+
+.mat-calendar-body {
+  background-color: #ffffff !important;
+}
+
+.mat-calendar-body-cell {
+  background-color: transparent !important;
+
+  &:hover {
+    .mat-calendar-body-cell-content {
+      background-color: rgba(33, 150, 243, 0.1) !important;
+    }
+  }
+}
+
+.mat-calendar-body-cell-content {
+  background-color: transparent !important;
+  border: none !important;
+  color: var(--text-primary) !important;
+
+  &.mat-calendar-body-selected {
+    background-color: var(--color-primary-500) !important;
+    color: #ffffff !important;
+    font-weight: 500 !important;
+  }
+
+  &.mat-calendar-body-today:not(.mat-calendar-body-selected) {
+    border: 1px solid var(--color-primary-500) !important;
+    color: var(--color-primary-700) !important;
+  }
+}
+
+.mat-calendar-previous-button,
+.mat-calendar-next-button {
+  background-color: transparent !important;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.04) !important;
+  }
+}
+
+.mat-calendar-period-button {
+  background-color: transparent !important;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.04) !important;
+  }
+}
+
+.mat-calendar-arrow {
+  fill: var(--text-primary) !important;
+}
+
+// ============================================
+// SUPORTE DARK MODE
+// ============================================
+[data-theme='dark'] {
+  .mat-datepicker-content,
+  .mat-datepicker-content-container,
+  .mat-calendar,
+  .mat-calendar-header,
+  .mat-calendar-content,
+  .mat-calendar-table,
+  .mat-calendar-table-header,
+  .mat-calendar-body {
+    background-color: var(--surface-elevated) !important;
+    color: var(--text-primary) !important;
+  }
+
+  .mat-calendar-body-cell:hover {
+    .mat-calendar-body-cell-content {
+      background-color: rgba(255, 255, 255, 0.1) !important;
+    }
+  }
+
+  .mat-calendar-body-cell-content {
+    color: var(--text-primary) !important;
+
+    &.mat-calendar-body-selected {
+      background-color: var(--color-primary-600) !important;
+      color: #ffffff !important;
+    }
+
+    &.mat-calendar-body-today:not(.mat-calendar-body-selected) {
+      border: 1px solid var(--color-primary-400) !important;
+      color: var(--color-primary-300) !important;
+    }
+  }
+
+  .mat-calendar-body-label,
+  .mat-calendar-table-header-divider::after,
+  .mat-calendar-body-label {
+    color: var(--text-secondary) !important;
+  }
+
+  .mat-calendar-previous-button,
+  .mat-calendar-next-button,
+  .mat-calendar-period-button {
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.08) !important;
+    }
+  }
+
+  .mat-calendar-arrow {
+    fill: var(--text-primary) !important;
+  }
+}
+
+// ============================================
+// OVERLAY CONFIGURATION
+// ============================================
+.cdk-overlay-container {
+  z-index: var(--z-modal);
+}
+
+.cdk-overlay-pane.mat-datepicker-panel {
+  min-width: 296px !important;
+  max-width: 400px !important;
+}
+
+.mat-mdc-autocomplete-panel {
+  background-color: #ffffff !important;
+  border-radius: 12px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid var(--border-primary) !important;
+  overflow: hidden !important;
+}
+
+// option do Autocomplete
+.mat-mdc-autocomplete-panel {
+  .mat-mdc-option {
+    background-color: #ffffff !important;
+
+    &:hover {
+      background-color: var(--color-gray-50) !important;
+    }
+
+    &.mat-mdc-option-active,
+    &.mdc-list-item--selected {
+      background-color: var(--color-primary-50) !important;
+
+      .mdc-list-item__primary-text {
+        color: var(--color-primary-700) !important;
+      }
+    }
+  }
+
+  // Texto das opções
+  .mdc-list-item__primary-text {
+    color: var(--text-primary) !important;
+  }
+}
+
+// ============================================
+// DARK MODE SUPPORT
+// ============================================
+[data-theme='dark'] {
+  .mat-mdc-autocomplete-panel {
+    background-color: var(--surface-elevated) !important;
+    border-color: var(--border-secondary) !important;
+
+    .mat-mdc-option {
+      background-color: var(--surface-elevated) !important;
+
+      &:hover {
+        background-color: var(--background-tertiary) !important;
+      }
+
+      &.mat-mdc-option-active,
+      &.mdc-list-item--selected {
+        background-color: rgba(33, 150, 243, 0.1) !important;
+
+        .mdc-list-item__primary-text {
+          color: var(--color-primary-300) !important;
+        }
+      }
+    }
+
+    .mdc-list-item__primary-text {
+      color: var(--text-primary) !important;
+    }
+  }
 }

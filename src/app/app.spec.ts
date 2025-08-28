@@ -10,15 +10,9 @@ describe('App', () => {
     await TestBed.configureTestingModule({
       imports: [
         App,
-        // RouterTestingModule foi REMOVIDO daqui
       ],
       providers: [
-        // O provedor para o modo Zoneless
         provideZonelessChangeDetection(),
-
-        // 2. O provedor moderno para o Router em testes.
-        // Fornecemos um array de rotas vazio porque só queremos
-        // que o TestBed "entenda" o que é o <router-outlet>.
         provideRouter([]),
       ]
     }).compileComponents();
