@@ -105,3 +105,5 @@ A significant effort was dedicated to refactoring and enhancing the code initial
 - **Advanced State Management:** If the application complexity grows, introduce a dedicated state management library like NgRx.
 
 - **UI Enhancements:** Implement features like infinite scrolling/pagination and skeleton loaders for improved UX.
+
+- **View Toggle:** Add functionality for users to switch between table view and column view, and implement drag and drop functionality.
